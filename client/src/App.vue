@@ -6,7 +6,11 @@
 
     <!-- Viser login, register eller dashboard baseret på currentView -->
     <!-- @login-success="gotoDashboard" lytter til event fra child component, som sender besked til app.vue om login lykkedes-->
-    <LoginView v-if="currentView === 'login'" @login-success="gotoDashboard" />
+    <LoginView
+      v-if="currentView === 'login'"
+      @login-success="gotoDashboard"
+      @go-to-register="gotoRegister"
+    />
     <RegisterView
       v-if="currentView === 'register'"
       @register-success="gotoDashboard"

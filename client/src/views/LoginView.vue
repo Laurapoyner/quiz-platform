@@ -1,18 +1,36 @@
+<!-- Comment: Dette er login-siden (default view). Når login lykkedes, vil den sende et event til parent component (app.vue) -->
+<!-- TO DO: skal kommunikere med password authentification -->
+
 <template>
   <div class="login-view">
     <h2>Login</h2>
     <form @submit.prevent="login">
       <div>
         <label>Brugernavn:</label>
-        <input v-model="username" type="text" required />
+        <input
+          v-model="username"
+          type="text"
+          placeholder="Brugernavn"
+          required
+        />
       </div>
       <div>
         <label>Password:</label>
-        <input v-model="password" type="password" required />
+        <input
+          v-model="password"
+          type="password"
+          placeholder="Password"
+          required
+        />
       </div>
       <button type="submit">Login</button>
     </form>
     <p v-if="error" class="error">{{ error }}</p>
+
+    <p>
+      Har du ikke en bruger endnu?
+      <button @click="$emit('go-to-register')">Opret konto</button>
+    </p>
   </div>
 </template>
 
@@ -29,6 +47,7 @@ export default {
     async login() {
       this.error = "";
       try {
+        // TO DO: skal ændres til den rigtige API endpoint
         const response = await fetch("http://localhost:3000/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -45,10 +64,10 @@ export default {
           return;
         }
 
-        // Gem evt. token i localStorage
+        // TO DO: Skal vi gemme i token i localStorage for at bruge det senere til autentificering?
         localStorage.setItem("token", data.token);
 
-        // Fortæl App.vue at login var succesfuldt
+        // Event: fortæl App.vue at login var succesfuldt. emit sender opad.
         this.$emit("login-success");
       } catch (err) {
         this.error = "Server fejl: " + err.message;
@@ -58,14 +77,4 @@ export default {
 };
 </script>
 
-<style>
-.login-view {
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-.error {
-  color: red;
-  margin-top: 1rem;
-}
-</style>
+<style></style>

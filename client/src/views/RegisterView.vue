@@ -1,3 +1,10 @@
+<!-- Her kan man registrere sig som ny bruger. Når registrering lykkedes, 
+  vil den sende et event til parent component (app.vue) om at registrering var succesfuld, 
+  og app.vue vil så navigere til dashboard view. -->
+
+<!-- TO DO: Hvordan bliver bruger oprettet i systemet? Skal kommunikere med backend API endpoint for at oprette bruger.
+  Hvordan vil vi sikkerhedstjekke - fx. skal man skrive password to gange? -->
+
 <template>
   <div class="register-view">
     <h2>Register</h2>
@@ -29,6 +36,7 @@ export default {
     async register() {
       this.error = "";
       try {
+        // TO DO: Hvordan bliver bruger oprettet i systemet // send til rigtigt endpoint
         const response = await fetch("http://localhost:3000/api/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -54,15 +62,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.register-view {
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-.error {
-  color: red;
-  margin-top: 1rem;
-}
-</style>
