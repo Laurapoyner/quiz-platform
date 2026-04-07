@@ -23,9 +23,16 @@ const sessions = {};
 async function startQuiz(quizId, user) {
     const quiz = await loadQuiz(quizId);
 
-    console.log("Quiz loaded:", JSON.stringify(quiz, null, 2));
+    const title = quiz.title[0];
+    const questions = quiz.question;
 
-    return { message: "Quiz loaded" };
+    const firstQuestion = questions[0];
+
+    return {
+        title,
+        question: firstQuestion.text[0],
+        answers: firstQuestion.answers[0].answer.map(a => a._)
+    };
 }
 
 function answerQuestion(sessionId, answer) {
@@ -53,4 +60,3 @@ module.exports = {
     getResult
 };
 
-startQuiz(quiz1);

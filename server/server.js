@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 
 //import af routes
+
 const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
 const quizRoutes = require("./routes/quiz");
@@ -10,9 +11,11 @@ const quizRoutes = require("./routes/quiz");
 app.use(express.json());
 
 //routes
+
 app.use("/api", adminRoutes);
 app.use("/api", authRoutes);
 app.use("/api", quizRoutes);
+
 
 app.listen(3000, () => {
     console.log("Server: http://localhost:3000");
