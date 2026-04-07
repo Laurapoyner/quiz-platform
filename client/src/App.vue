@@ -1,8 +1,11 @@
+<!-- main vue app der håndterer navigation mellem login, register og dashboard views. -->
+
 <template>
   <div id="app">
     <h1>Quiz Platform</h1>
 
-    <!-- Simple conditional rendering uden vue-router -->
+    <!-- Viser login, register eller dashboard baseret på currentView -->
+    <!-- @login-success="gotoDashboard" lytter til event fra child component, som sender besked til app.vue om login lykkedes-->
     <LoginView v-if="currentView === 'login'" @login-success="gotoDashboard" />
     <RegisterView
       v-if="currentView === 'register'"
@@ -21,10 +24,11 @@ export default {
   components: { LoginView, RegisterView, DashboardView },
   data() {
     return {
-      currentView: "login", // default view
+      currentView: "login", // default
     };
   },
   methods: {
+    // kaldes når login eller register er succesfuld
     gotoDashboard() {
       this.currentView = "dashboard";
     },
@@ -34,11 +38,3 @@ export default {
   },
 };
 </script>
-
-<style>
-#app {
-  font-family: Arial, sans-serif;
-  max-width: 600px;
-  margin: 2rem auto;
-}
-</style>
