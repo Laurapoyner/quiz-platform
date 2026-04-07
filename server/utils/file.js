@@ -1,4 +1,4 @@
-//server
+//file
 
 // funktioner der laves her
 //her1

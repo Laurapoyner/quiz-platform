@@ -1,4 +1,4 @@
-//utils
+//hash
 
 //shuffle spørgsmål
 //sanitize HTML

@@ -1,4 +1,4 @@
-//server
+//admin
 
 // funktioner der laves her
 //her1

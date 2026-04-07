@@ -1,4 +1,4 @@
-//server
+//random
 
 // funktioner der laves her
 //her1
