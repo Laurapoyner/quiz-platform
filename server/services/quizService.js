@@ -14,10 +14,18 @@
  * Indeholder IKKE API routes eller database-logik
  */
 
+const fs = require('fs');
+const path = require('path');
+const xml2js = require('xml2js');
+
 const sessions = {};
 
 async function startQuiz(quizId, user) {
-    return { message: "not implemented" };
+    const quiz = await loadQuiz(quizId);
+
+    console.log("Quiz loaded:", JSON.stringify(quiz, null, 2));
+
+    return { message: "Quiz loaded" };
 }
 
 function answerQuestion(sessionId, answer) {
@@ -28,8 +36,21 @@ function getResult(sessionId) {
     return { message: "not implemented" };
 }
 
+async function loadQuiz(quizId) {
+    const filePath = path.join(__dirname, '../../data/quizzes', `${quizId}.xml`);
+
+    const xml = fs.readFileSync(filePath, 'utf-8');
+
+    const parser = new xml2js.Parser();
+    const result = await parser.parseStringPromise(xml);
+
+    return result.quiz;
+}
+
 module.exports = {
     startQuiz,
     answerQuestion,
     getResult
 };
+
+startQuiz(quiz1);
