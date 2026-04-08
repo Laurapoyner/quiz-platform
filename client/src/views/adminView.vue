@@ -20,7 +20,7 @@
 
       <ul v-if="quizzes.length">
         <li v-for="quiz in quizzes" :key="quiz">
-          {{ quiz }}
+          <a href="#" @click.prevent="testQuiz(quiz)">{{ quiz }}</a>
           <button @click="deleteQuiz(quiz)">Slet</button>
         </li>
       </ul>
@@ -79,6 +79,9 @@ export default {
   },
 
   methods: {
+    testQuiz(quizName) {
+      this.$emit("start-quiz", quizName); // send quiznavnet op til App.vue
+    },
     handleFile(event) {
       this.selectedFile = event.target.files[0];
     },

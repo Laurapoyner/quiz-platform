@@ -1,39 +1,52 @@
 <template>
-  <div class="admin">
-    <h2>Admin Panel</h2>
+  <div class="dashboard">
+    <h2>Dashboard</h2>
 
     <p>
-      Du er logget ind som admin: <strong>{{ username }}</strong>
+      Du er logget ind som <strong>{{ username }}</strong>
     </p>
 
-    <h3>Upload quiz</h3>
+    <hr />
 
-    <input type="file" @change="handleFile" />
-    <button @click="uploadQuiz">Upload</button>
-
-    <h3>Eksisterende quizzer</h3>
+    <!-- QUIZ LISTE -->
+    <h3>Tilgængelige quizzer</h3>
 
     <ul v-if="quizzes.length">
-      <li v-for="quiz in quizzes" :key="quiz.id">
-        {{ quiz.title }}
+      <li v-for="quiz in quizzes" :key="quiz">
+        {{ quiz }}
 
-        <button @click="testQuiz(quiz.id)">Test</button>
-        <button @click="deleteQuiz(quiz.id)">Slet</button>
+        <button @click="startQuiz(quiz)">Start quiz</button>
       </li>
     </ul>
 
     <p v-else>Ingen quizzer fundet</p>
 
-    <h3>Brugeraktivitet</h3>
+    <hr />
 
-    <ul v-if="logs.length">
-      <li v-for="log in logs" :key="log.id">
-        Bruger: {{ log.user }} | Quiz: {{ log.quiz }} | Score: {{ log.score }} |
-        Tid: {{ log.time }}
-      </li>
-    </ul>
+    <!-- RESULTATER -->
+    <h3>Mine resultater</h3>
 
-    <p v-else>Ingen aktivitet endnu</p>
+    <table v-if="results.length" class="results-table">
+      <thead>
+        <tr>
+          <th>Quiz</th>
+          <th>Score</th>
+          <th>Tid (sek)</th>
+          <th>Dato</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr v-for="r in results" :key="r.attemptId[0]">
+          <td>{{ r.quizId[0] }}</td>
+          <td>{{ r.score[0] }}</td>
+          <td>{{ r.time[0] }}</td>
+          <td>{{ formatDate(r.date[0]) }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p v-else>Du har ikke taget nogen quizzer endnu</p>
   </div>
 </template>
 
@@ -43,86 +56,76 @@ export default {
     return {
       username: "",
       quizzes: [],
-      logs: [],
-      selectedFile: null,
+      results: [],
     };
   },
 
   async mounted() {
-    this.username = localStorage.getItem("username") || "Admin";
+    this.username = localStorage.getItem("username") || "Bruger";
 
-    try {
-      const quizResponse = await fetch("http://localhost:3000/api/quizzes");
-
-      if (quizResponse.ok) {
-        this.quizzes = await quizResponse.json();
-      }
-
-      const logResponse = await fetch("http://localhost:3000/api/admin/logs");
-
-      if (logResponse.ok) {
-        this.logs = await logResponse.json();
-      }
-    } catch (err) {
-      console.error("Fejl ved hentning:", err);
-    }
+    await this.loadQuizzes();
+    await this.loadResults();
   },
 
   methods: {
-    handleFile(event) {
-      this.selectedFile = event.target.files[0];
-    },
-
-    async uploadQuiz() {
-      if (!this.selectedFile) {
-        alert("Vælg en fil først");
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("quiz", this.selectedFile);
-
+    async loadQuizzes() {
       try {
-        const response = await fetch("http://localhost:3000/api/admin/upload", {
-          method: "POST",
-          body: formData,
-        });
+        const res = await fetch("http://localhost:3000/api/admin/quizzes");
+        const data = await res.json();
 
-        if (response.ok) {
-          alert("Quiz uploadet");
-
-          const quizResponse = await fetch("http://localhost:3000/api/quizzes");
-
-          this.quizzes = await quizResponse.json();
-        }
+        this.quizzes = data;
       } catch (err) {
-        console.error("Upload fejl:", err);
+        console.error("Kunne ikke hente quizzer:", err);
       }
     },
 
-    async deleteQuiz(id) {
+    async loadResults() {
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/admin/quiz/${id}`,
-          {
-            method: "DELETE",
-          },
-        );
+        const res = await fetch("http://localhost:3000/api/admin/results");
+        const data = await res.json();
 
-        if (response.ok) {
-          this.quizzes = this.quizzes.filter((q) => q.id !== id);
-        }
+        const allResults = data.results?.result || [];
+
+        const username = localStorage.getItem("username");
+
+        // filtrer så brugeren kun ser sine egne resultater
+        this.results = allResults.filter((r) => r.userId[0] === username);
       } catch (err) {
-        console.error("Slet fejl:", err);
+        console.error("Kunne ikke hente resultater:", err);
       }
     },
 
-    testQuiz(id) {
-      console.log("Tester quiz:", id);
+    startQuiz(quizName) {
+      // send quiz op til App.vue
+      this.$emit("start-quiz", quizName);
+    },
 
-      // admin kan også tage quiz
-      this.$emit("start-quiz", id);
+    formatDate(dateStr) {
+      const d = new Date(dateStr);
+      return d.toLocaleString();
     },
   },
 };
 </script>
+
+<style scoped>
+.dashboard {
+  max-width: 700px;
+  margin: 2rem auto;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.results-table th,
+.results-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+}
+
+.results-table th {
+  background: #f0f0f0;
+}
+</style>
