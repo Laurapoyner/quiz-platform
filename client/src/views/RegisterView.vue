@@ -101,7 +101,7 @@ export default {
         const data = await response.json();
 
         if (!response.ok) {
-          this.error = data.error || "Registrering fejlede";
+          this.error = data.message || "Registrering fejlede";
           return;
         }
 
