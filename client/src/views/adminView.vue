@@ -1,36 +1,67 @@
 <template>
   <div class="admin">
     <h2>Admin Panel</h2>
+    <!-- <p>
+      Du er logget ind som admin: <strong>{{ username }}</strong>
+    </p> -->
 
-    <h3>Upload quiz</h3>
-    <input type="file" @change="handleFile" accept=".xml" />
-    <button @click="uploadQuiz">Upload</button>
+    <!--- Upload quiz --->
+    <div>
+      <h3>Upload quiz</h3>
+
+      <input type="file" @change="handleFile" accept=".xml" />
+      <button @click="uploadQuiz">Upload</button>
+    </div>
+    <hr />
+
+    <!--- Quiz liste --->
+    <div>
+      <h3>Quiz liste</h3>
+      <!-- <button @click="loadQuizzes">Hent quizzer</button> -->
+      <!-- <ul>
+        <li v-for="quiz in quizzes" :key="quiz">
+          {{ quiz }}
+
+          <button @click="deleteQuiz(quiz)">Slet</button>
+        </li>
+      </ul> -->
+
+      <ul v-if="quizzes.length">
+        <li v-for="quiz in quizzes" :key="quiz">
+          {{ quiz }}
+          <button @click="deleteQuiz(quiz)">Slet</button>
+        </li>
+      </ul>
+      <p v-else>Ingen quizzer fundet</p>
+    </div>
 
     <hr />
 
-    <h3>Quiz liste</h3>
-    <button @click="loadQuizzes">Hent quizzer</button>
-    <ul>
-      <li v-for="quiz in quizzes" :key="quiz">
-        {{ quiz }}
-        <button @click="deleteQuiz(quiz)">Slet</button>
-      </li>
-    </ul>
-
-    <hr />
-
-    <h3>Resultater</h3>
-    <button @click="loadResults">Hent resultater</button>
-
-    <!-- Erstat <pre>{{ results }}</pre> med denne -->
-    <ul v-if="results.length">
-      <li v-for="r in results" :key="r.attemptId[0]">
-        Bruger: {{ r.userId[0] }} | Quiz: {{ r.quizId[0] }} | Score:
-        {{ r.score[0] }} | Tid: {{ r.time[0] }} sek | Dato: {{ r.date[0] }}
-      </li>
-    </ul>
-
-    <p v-else>Ingen resultater endnu</p>
+    <!-- Brugerresultater  -->
+    <div>
+      <h3>Brugerresultater</h3>
+      <table v-if="results.length" class="results-table">
+        <thead>
+          <tr>
+            <th>Bruger</th>
+            <th>Quiz</th>
+            <th>Score</th>
+            <th>Tid (sek)</th>
+            <th>Dato</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="r in results" :key="r.attemptId[0]">
+            <td>{{ r.userId[0] }}</td>
+            <td>{{ r.quizId[0] }}</td>
+            <td>{{ r.score[0] }}</td>
+            <td>{{ r.time[0] }}</td>
+            <td>{{ formatDate(r.date[0]) }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p v-else>Ingen resultater endnu</p>
+    </div>
   </div>
 </template>
 
@@ -44,12 +75,6 @@ export default {
     };
   },
 
-  mounted() {
-    // Ved mount, hent quizzer og resultater
-    this.loadQuizzes();
-    this.loadResults();
-  },
-
   methods: {
     handleFile(event) {
       this.selectedFile = event.target.files[0];
@@ -61,76 +86,39 @@ export default {
         return;
       }
 
-      try {
-        const formData = new FormData();
-        formData.append("quiz", this.selectedFile);
+      const formData = new FormData();
+      formData.append("quiz", this.selectedFile);
 
-        const res = await fetch("http://localhost:3000/api/admin/upload", {
-          method: "POST",
-          body: formData,
-        });
+      await fetch("http://localhost:3000/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-        if (!res.ok) throw new Error("Upload fejlede");
+      alert("Quiz uploadet");
 
-        alert("Quiz uploadet!");
-        this.loadQuizzes();
-      } catch (err) {
-        alert("Fejl ved upload: " + err.message);
-      }
+      this.loadQuizzes();
     },
 
     async loadQuizzes() {
-      try {
-        const res = await fetch("http://localhost:3000/api/admin/quizzes");
-        if (!res.ok) throw new Error("Kan ikke hente quizzer");
-        this.quizzes = await res.json();
-      } catch (err) {
-        console.error(err);
-      }
+      const res = await fetch("http://localhost:3000/api/admin/quizzes");
+
+      this.quizzes = await res.json();
     },
 
     async deleteQuiz(name) {
-      try {
-        const res = await fetch(
-          `http://localhost:3000/api/admin/quiz/${name}`,
-          {
-            method: "DELETE",
-          },
-        );
-        if (!res.ok) throw new Error("Sletning fejlede");
-        alert("Quiz slettet!");
-        this.loadQuizzes();
-      } catch (err) {
-        alert("Fejl: " + err.message);
-      }
+      await fetch(`http://localhost:3000/api/admin/quiz/${name}`, {
+        method: "DELETE",
+      });
+
+      alert("Quiz slettet");
+      this.loadQuizzes();
     },
 
     async loadResults() {
-      try {
-        const res = await fetch("http://localhost:3000/api/admin/results");
-        if (!res.ok) throw new Error("Kan ikke hente resultater");
-        const data = await res.json();
-        this.results = JSON.stringify(data, null, 2);
-      } catch (err) {
-        console.error(err);
-      }
+      const res = await fetch("http://localhost:3000/api/admin/results");
+      const data = await res.json();
+      this.results = JSON.stringify(data, null, 2);
     },
   },
 };
 </script>
-
-<style scoped>
-.admin {
-  max-width: 600px;
-  margin: 2rem auto;
-  font-family: Arial, sans-serif;
-}
-button {
-  margin-left: 1rem;
-}
-pre {
-  background: #f0f0f0;
-  padding: 1rem;
-  overflow-x: auto;
-}
-</style>
