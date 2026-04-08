@@ -13,8 +13,8 @@ app.use(express.json());
 //import af routes
 
 const adminRoutes = require("./routes/admin");
-//const authRoutes = require("./routes/auth");
-//const quizRoutes = require("./routes/quiz");
+const authRoutes = require("./routes/auth");
+const quizRoutes = require("./routes/quiz");
 
 
 //routes

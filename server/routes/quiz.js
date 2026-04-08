@@ -6,11 +6,24 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/quiz/test', (req, res) => {
-    res.json({ message: "quiz route works" });
+const { startQuiz, answerQuestion } = require("../services/quizService");
+
+// start quiz
+router.post("/start", async (req, res) => {
+    const { quizId, user } = req.body;
+
+    const result = await startQuiz(quizId, user);
+
+    res.json(result);
+});
+
+// answer question
+router.post("/answer", (req, res) => {
+    const { sessionId, answer } = req.body;
+
+    const result = answerQuestion(sessionId, answer);
+
+    res.json(result);
 });
 
 module.exports = router;
-// funktioner der laves her
-//her1
-//her2
