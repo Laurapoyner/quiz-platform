@@ -156,3 +156,16 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background: var(--accent) !important;
 }
+
+.password-rules p {
+    margin: 4px 0;
+    font-size: 14px;
+}
+
+.valid {
+    color: green;
+}
+
+.invalid {
+    color: red;
+}
