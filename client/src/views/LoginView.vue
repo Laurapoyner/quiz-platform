@@ -3,10 +3,10 @@
 
 <template>
   <div class="login-view">
-    <h2>Login</h2>
+    <h2>Log på</h2>
     <form @submit.prevent="login">
-      <div>
-        <label>Brugernavn:</label>
+      <div class="inputfield">
+        <label>Brugernavn</label>
         <input
           v-model="username"
           type="text"
@@ -14,8 +14,8 @@
           required
         />
       </div>
-      <div>
-        <label>Password:</label>
+      <div class="inputfield">
+        <label>Password</label>
         <input
           v-model="password"
           type="password"
@@ -23,13 +23,15 @@
           required
         />
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" class="submit-btn">Log på min konto</button>
     </form>
     <p v-if="error" class="error">{{ error }}</p>
 
     <p>
       Har du ikke en bruger endnu?
-      <button @click="$emit('go-to-register')">Opret konto</button>
+      <button class="text-link-btn" @click="$emit('go-to-register')">
+        Opret konto
+      </button>
     </p>
   </div>
 </template>
@@ -64,11 +66,15 @@ export default {
           return;
         }
 
-        // TO DO: Skal vi gemme i token i localStorage for at bruge det senere til autentificering?
+        // TO DO: Skal vi gemme i token her eller i tobiass kode?
         localStorage.setItem("token", data.token);
+        // gem brugernavn
+        localStorage.setItem("username", this.username);
 
         // Event: fortæl App.vue at login var succesfuldt. emit sender opad.
-        this.$emit("login-success");
+        this.$emit("login-success", {
+          username: this.username,
+        });
       } catch (err) {
         this.error = "Server fejl: " + err.message;
       }
@@ -76,5 +82,3 @@ export default {
   },
 };
 </script>
-
-<style></style>
