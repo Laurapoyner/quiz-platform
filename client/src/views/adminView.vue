@@ -69,10 +69,20 @@
 export default {
   data() {
     return {
+      username: "",
       selectedFile: null,
       quizzes: [],
-      results: "",
+      results: [],
     };
+  },
+
+  async mounted() {
+    // Hent brugernavn fra localStorage
+    this.username = localStorage.getItem("username") || "Admin";
+
+    // Load quizser og resultater automatisk
+    await this.loadQuizzes();
+    await this.loadResults();
   },
 
   methods: {
