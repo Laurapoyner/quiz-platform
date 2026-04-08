@@ -9,15 +9,15 @@
   <div class="register-view">
     <h2>Register</h2>
     <form @submit.prevent="register">
-      <div>
+      <div class="inputfield">
         <label>Brugernavn:</label>
         <input v-model="username" type="text" required />
       </div>
-      <div>
+      <div class="inputfield">
         <label>Password:</label>
         <input v-model="password" type="password" required />
       </div>
-      <button type="submit">Register</button>
+      <button type="submit" class="submit-btn">Register</button>
     </form>
     <p v-if="error" class="error">{{ error }}</p>
   </div>

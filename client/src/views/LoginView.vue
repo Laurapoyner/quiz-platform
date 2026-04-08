@@ -5,7 +5,7 @@
   <div class="login-view">
     <h2>Login</h2>
     <form @submit.prevent="login">
-      <div>
+      <div class="inputfield">
         <label>Brugernavn:</label>
         <input
           v-model="username"
@@ -14,7 +14,7 @@
           required
         />
       </div>
-      <div>
+      <div class="inputfield">
         <label>Password:</label>
         <input
           v-model="password"
@@ -23,7 +23,7 @@
           required
         />
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" class="submit-btn">Login</button>
     </form>
     <p v-if="error" class="error">{{ error }}</p>
 
@@ -64,7 +64,7 @@ export default {
           return;
         }
 
-        // TO DO: Skal vi gemme i token i localStorage for at bruge det senere til autentificering?
+        // TO DO: Skal vi gemme i token i localStorage
         localStorage.setItem("token", data.token);
 
         // Event: fortæl App.vue at login var succesfuldt. emit sender opad.
@@ -76,5 +76,3 @@ export default {
   },
 };
 </script>
-
-<style></style>
