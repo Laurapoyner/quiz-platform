@@ -1,0 +1,22 @@
+<quiz>
+  <title>Test Quiz</title>
+
+  <question type="single">
+    <text>Hvad er 2 + 2?</text>
+    <answers>
+      <answer correct="true">4</answer>
+      <answer correct="false">3</answer>
+      <answer correct="false">5</answer>
+    </answers>
+  </question>
+
+  <question type="single">
+    <text>Hvad er hovedstaden i Danmark?</text>
+    <answers>
+      <answer correct="true">København</answer>
+      <answer correct="false">Aarhus</answer>
+      <answer correct="false">Odense</answer>
+    </answers>
+  </question>
+
+</quiz>

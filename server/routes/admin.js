@@ -5,11 +5,11 @@
 //Upload quiz = multer
 //Slet quiz = fs
 //Liste quizeer = fs
-//Læse resultater xml2js (via xml.js)
+//Lï¿½se resultater xml2js (via xml.js)
 //Gemme resutalter xml2js (via xml.js)
 
 
-// Håndterer alle admin endpoints (upload, delete, liste, resultater)
+// Hï¿½ndterer alle admin endpoints (upload, delete, liste, resultater)
 
 const express = require("express");
 const multer = require("multer");
@@ -63,7 +63,7 @@ router.get("/quizzes", (req, res) => {
 
 
 // DELETE /admin/quiz/:name
-// Sletter en quiz baseret på filnavn
+// Sletter en quiz baseret pï¿½ filnavn
 router.delete("/quiz/:name", (req, res) => {
     const filePath = path.join("data/quizzes", req.params.name);
 

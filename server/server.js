@@ -11,15 +11,18 @@ app.use(express.json());
 
 
 //import af routes
+
 const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
-//const quizRoutes = require("./routes/quiz");
+const quizRoutes = require("./routes/quiz");
 
 
 //routes
+
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
-//app.use("/api/quiz", quizRoutes);
+app.use("/api/quiz", quizRoutes);
+
 
 
 app.listen(3000, () => {
