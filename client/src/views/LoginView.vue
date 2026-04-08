@@ -64,11 +64,15 @@ export default {
           return;
         }
 
-        // TO DO: Skal vi gemme i token i localStorage
+        // TO DO: Skal vi gemme i token her eller i tobiass kode?
         localStorage.setItem("token", data.token);
+        // gem brugernavn
+        localStorage.setItem("username", this.username);
 
         // Event: fortæl App.vue at login var succesfuldt. emit sender opad.
-        this.$emit("login-success");
+        this.$emit("login-success", {
+          username: this.username,
+        });
       } catch (err) {
         this.error = "Server fejl: " + err.message;
       }

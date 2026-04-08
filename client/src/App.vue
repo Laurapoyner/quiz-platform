@@ -15,10 +15,11 @@
       v-if="currentView === 'register'"
       @register-success="gotoDashboard"
     />
-    <DashboardView v-if="currentView === 'dashboard'" />
+    <DashboardView v-if="currentView === 'dashboard'" @start-quiz="startQuiz" />
 
     <!-- TO DO: <AdminView v-if="role === 'admin'" /> -->
-    <AdminView v-if="currentView === 'admin'" />
+    <!-- <AdminView v-if="currentView === 'admin'" /> -->
+    <AdminView v-if="currentView === 'admin'" @start-quiz="startQuiz" />
 
     <!-- TO DO:  <DashboardView
       v-if="currentView === 'dashboard'"
@@ -27,7 +28,8 @@
       :user="loggedInUser"
     /> -->
 
-    <QuizView v-if="currentView === 'quiz'" />
+    <!-- <QuizView v-if="currentView === 'quiz'" /> -->
+    <QuizView v-if="currentView === 'quiz'" :quizName="selectedQuiz" />
   </div>
 </template>
 
@@ -43,7 +45,8 @@ export default {
   data() {
     return {
       // currentView: "login", // default
-      currentView: "quiz", // midlertidig for at teste admin view uden at skulle logge ind hver gang
+      currentView: "dashboard", // midlertidig for at teste admin view uden at skulle logge ind hver gang
+      selectedQuiz: null,
     };
   },
   methods: {
@@ -53,6 +56,14 @@ export default {
     },
     gotoRegister() {
       this.currentView = "register";
+    },
+    handleLogin(user) {
+      this.user = user;
+      this.currentView = "dashboard";
+    },
+    startQuiz(quizName) {
+      this.selectedQuiz = quizName;
+      this.currentView = "quiz";
     },
   },
 };
