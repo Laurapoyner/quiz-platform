@@ -125,3 +125,16 @@ p {
   color: red;
   margin-top: 1rem;
 }
+
+.password-rules p {
+    margin: 4px 0;
+    font-size: 14px;
+}
+
+.valid {
+    color: green;
+}
+
+.invalid {
+    color: red;
+}
