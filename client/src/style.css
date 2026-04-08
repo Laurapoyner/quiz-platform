@@ -5,7 +5,7 @@
   --border: #1c2f3d;
   --code-bg: #f4f3ec;
   --accent: rgba(2, 204, 137, 1);
-  --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent-50: rgba(2, 204, 137, 0.159);
   --accent-border: rgba(2, 204, 137, 1);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
@@ -25,6 +25,10 @@
   @media (max-width: 1024px) {
     font-size: 16px;
   }
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -60,46 +64,35 @@ body {
 h1,
 h2 {
   font-family: var(--heading);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-h);
 }
 
 h1 {
   font-size: 42px;
-  letter-spacing: -1.68px;
   margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
 }
+
 h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
+  font-size: 28px;
+  line-height: 1;
   margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
 }
+
+h3 {
+  font-size: 16px;
+  line-height: 1;
+  margin: 0 0 8px;
+}
+
 p {
   margin: 0;
   font-size: 14px;
   font-weight: 600;
 }
 
-#center {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+.text-dimmed {
+  color: var(--text);
 }
 
 .error {
@@ -146,10 +139,16 @@ input[type="password"] {
   border-color: var(--border);
 }
 
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border: 2px solid var(--border);
+}
+
 button[type="submit"] {
   -webkit-appearance: none; /* For Safari/Chrome */
   appearance: none;
-  border: none; /* Fjern standard ramme */
+  border: 2px solid var(--border) !important;
   background: var(--border) !important;
   padding: 14px 20px !important;
   cursor: pointer;
@@ -157,12 +156,13 @@ button[type="submit"] {
   color: var(--bg);
   width: 100%;
   border-radius: 8px;
-  transition: background 0.3s ease;
+  transition: background border 0.3s ease;
   font-weight: 600;
 }
 
 button[type="submit"]:hover {
   background: var(--accent) !important;
+  border: 2px solid var(--accent-50) !important;
 }
 
 .password-rules p {
@@ -184,8 +184,91 @@ button[type="submit"]:hover {
   border: none; /* Fjern standard ramme */
   background: none;
   cursor: pointer;
-  margin: 0 0 20px 0;
+  margin: 0 0 10px 0;
   color: var(--accent);
   transition: background 0.3s ease;
   font-weight: 600;
+  padding: 14px 8px !important;
+  border-radius: 6px;
+}
+
+.text-link-btn:hover {
+  background: var(--accent-50);
+}
+
+/**** DASHBOARD *****/
+
+.dashboard,
+#container,
+.admin {
+  text-align: left;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  min-width: 500px;
+  margin: 0 auto;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.results-table th,
+.results-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+}
+
+.results-table th {
+  background: #f0f0f0;
+}
+
+/**quiz list**/
+
+.quiz-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.quiz-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  /* border: 1px solid #ccc; */
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 10px;
+  width: 100%;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.quiz-item-btn {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid var(--border) !important;
+  background: none !important;
+  padding: 14px 18px !important;
+  cursor: pointer;
+  color: var(--text-h);
+  border-radius: 6px;
+  transition: background color 0.3s ease;
+  font-weight: 600;
+}
+
+.quiz-item-btn:hover {
+  background: var(--accent) !important;
+  color: var(--bg);
+  border: 1px solid var(--accent) !important;
 }

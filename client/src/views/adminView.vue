@@ -1,9 +1,9 @@
 <template>
   <div class="admin">
-    <h2>Admin Panel</h2>
-    <!-- <p>
-      Du er logget ind som admin: <strong>{{ username }}</strong>
-    </p> -->
+    <div>
+      <h2>Admin Panel</h2>
+      <h3 class="text-dimmed">Velkommen {{ username }}!</h3>
+    </div>
 
     <!--- Upload quiz --->
     <div>
@@ -12,24 +12,21 @@
       <input type="file" @change="handleFile" accept=".xml" />
       <button @click="uploadQuiz">Upload</button>
     </div>
-    <hr />
 
     <!--- Quiz liste --->
-    <div>
+    <div cladd="quiz-list">
       <h3>Quiz liste</h3>
 
       <ul v-if="quizzes.length">
-        <li v-for="quiz in quizzes" :key="quiz">
-          <a href="#" @click.prevent="testQuiz(quiz)">{{ quiz }}</a>
-          <button @click="deleteQuiz(quiz)">Slet</button>
+        <li class="quiz-item" v-for="quiz in quizzes" :key="quiz">
+          {{ quiz }}
+          <button class="quiz-item-btn" @click="deleteQuiz(quiz)">Slet</button>
         </li>
       </ul>
       <p v-else>Ingen quizzer fundet</p>
     </div>
 
     <!-- TO DO: tilføj mulighed for at teste quizzer. api der kører quizzen -->
-    <hr />
-
     <!-- Brugerresultater  -->
     <div>
       <h3>Brugerresultater</h3>

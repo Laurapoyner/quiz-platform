@@ -7,37 +7,57 @@
 
 <template>
   <div class="register-view">
-    <h2>Register</h2>
+    <h2>Opret en bruger</h2>
     <form @submit.prevent="register">
-        <div>
-            <label>Brugernavn:</label>
-            <input v-model="username" type="text" required />
-        </div>
-        <div>
-            <label>Password:</label>
-            <input v-model="password" type="password" required />
-        </div>
-        <div>
-            <label>Gentag password:</label>
-            <input v-model="confirmPassword" type="password" required />
-        </div>
+      <div class="inputfield">
+        <label>Brugernavn</label>
+        <input v-model="username" type="text" required />
+      </div>
+      <div class="inputfield">
+        <label>Password</label>
+        <input v-model="password" type="password" required />
+      </div>
+      <div class="inputfield">
+        <label>Gentag password</label>
+        <input v-model="confirmPassword" type="password" required />
+      </div>
 
-        <div class="password-rules">
-            <p :class="{ valid: passwordRules.hasUppercase, invalid: !passwordRules.hasUppercase }">
-                • Password skal have stort bogstav
-            </p>
-            <p :class="{ valid: passwordRules.hasLength, invalid: !passwordRules.hasLength }">
-                • Password skal være over 6 tegn
-            </p>
-            <p :class="{ valid: passwordRules.hasSpecial, invalid: !passwordRules.hasSpecial }">
-                • Password skal have specialtegn
-            </p>
-            <p :class="{ valid: passwordRules.passwordsMatch, invalid: !passwordRules.passwordsMatch }">
-                • Password matcher ikke hinanden
-            </p>
-        </div>
+      <div class="password-rules">
+        <p
+          :class="{
+            valid: passwordRules.hasUppercase,
+            invalid: !passwordRules.hasUppercase,
+          }"
+        >
+          • Password skal have stort bogstav
+        </p>
+        <p
+          :class="{
+            valid: passwordRules.hasLength,
+            invalid: !passwordRules.hasLength,
+          }"
+        >
+          • Password skal være over 6 tegn
+        </p>
+        <p
+          :class="{
+            valid: passwordRules.hasSpecial,
+            invalid: !passwordRules.hasSpecial,
+          }"
+        >
+          • Password skal have specialtegn
+        </p>
+        <p
+          :class="{
+            valid: passwordRules.passwordsMatch,
+            invalid: !passwordRules.passwordsMatch,
+          }"
+        >
+          • Password matcher ikke hinanden
+        </p>
+      </div>
 
-        <button type="submit">Register</button>
+      <button type="submit">Register</button>
     </form>
     <p v-if="error" class="error">{{ error }}</p>
   </div>
@@ -52,41 +72,41 @@ export default {
       confirmPassword: "",
       error: "",
     };
-        },   
-        computed: {
-            passwordRules() {
-                return {
-                    hasUppercase: /[A-Z]/.test(this.password),
-                    hasLength: this.password.length >= 6,
-                    hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(this.password),
-                    passwordsMatch: this.password === this.confirmPassword && this.password !== "",
-                };
-            }
-        },
+  },
+  computed: {
+    passwordRules() {
+      return {
+        hasUppercase: /[A-Z]/.test(this.password),
+        hasLength: this.password.length >= 6,
+        hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(this.password),
+        passwordsMatch:
+          this.password === this.confirmPassword && this.password !== "",
+      };
+    },
+  },
 
   methods: {
     async register() {
-          if (
-              !this.passwordRules.hasUppercase ||
-              !this.passwordRules.hasLength ||
-              !this.passwordRules.hasSpecial ||
-              !this.passwordRules.passwordsMatch
-          ) {
-              this.error = "Password opfylder ikke kravene";
-              return;
-          }
+      if (
+        !this.passwordRules.hasUppercase ||
+        !this.passwordRules.hasLength ||
+        !this.passwordRules.hasSpecial ||
+        !this.passwordRules.passwordsMatch
+      ) {
+        this.error = "Password opfylder ikke kravene";
+        return;
+      }
 
-          //check om passwords matcher
-          if (this.password !== this.confirmPassword) {
-              this.error = "Passwords matcher ikke";
-              return;
-          }
-          //minimum længde på 6
-          if (this.password.length < 6) {
-              this.error = "Password skal være mindst 6 tegn";
-              return;
-              
-          }
+      //check om passwords matcher
+      if (this.password !== this.confirmPassword) {
+        this.error = "Passwords matcher ikke";
+        return;
+      }
+      //minimum længde på 6
+      if (this.password.length < 6) {
+        this.error = "Password skal være mindst 6 tegn";
+        return;
+      }
       try {
         // TO DO: Hvordan bliver bruger oprettet i systemet // send til rigtigt endpoint
         const response = await fetch("http://localhost:3000/api/register", {
@@ -112,7 +132,5 @@ export default {
       }
     },
   },
-    };
-
-
+};
 </script>
