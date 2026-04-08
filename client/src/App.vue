@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       // currentView: "login", // default
-      currentView: "login", // midlertidig for at teste admin view uden at skulle logge ind hver gang
+      currentView: "dashboard", // midlertidig for at teste admin view uden at skulle logge ind hver gang
       selectedQuiz: null,
     };
   },

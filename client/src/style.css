@@ -64,47 +64,35 @@ body {
 h1,
 h2 {
   font-family: var(--heading);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-h);
 }
 
 h1 {
   font-size: 42px;
-  letter-spacing: -1.68px;
   margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
 }
 
 h2 {
-  font-size: 32px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
+  font-size: 28px;
+  line-height: 1;
   margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 28px;
-  }
 }
+
+h3 {
+  font-size: 16px;
+  line-height: 1;
+  margin: 0 0 8px;
+}
+
 p {
   margin: 0;
   font-size: 14px;
   font-weight: 600;
 }
 
-#center {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+.text-dimmed {
+  color: var(--text);
 }
 
 .error {
@@ -168,7 +156,7 @@ button[type="submit"] {
   color: var(--bg);
   width: 100%;
   border-radius: 8px;
-  transition: background 0.3s ease;
+  transition: background border 0.3s ease;
   font-weight: 600;
 }
 
@@ -206,4 +194,79 @@ button[type="submit"]:hover {
 
 .text-link-btn:hover {
   background: var(--accent-50);
+}
+
+/**** DASHBOARD *****/
+
+.dashboard {
+  text-align: left;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  min-width: 500px;
+  margin: 2rem auto;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.results-table th,
+.results-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+}
+
+.results-table th {
+  background: #f0f0f0;
+}
+
+/**quiz list**/
+
+.quiz-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.quiz-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  /* border: 1px solid #ccc; */
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 10px;
+  width: 100%;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.quiz-item-btn {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid var(--border) !important;
+  background: none !important;
+  padding: 14px 18px !important;
+  cursor: pointer;
+  color: var(--text-h);
+  border-radius: 6px;
+  transition: background color 0.3s ease;
+  font-weight: 600;
+}
+
+.quiz-item-btn:hover {
+  background: var(--accent) !important;
+  color: var(--bg);
+  border: 1px solid var(--accent) !important;
 }

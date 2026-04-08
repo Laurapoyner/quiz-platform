@@ -1,52 +1,53 @@
 <template>
   <div class="dashboard">
-    <h2>Dashboard</h2>
-
-    <p>
-      Du er logget ind som <strong>{{ username }}</strong>
-    </p>
-
-    <hr />
+    <div>
+      <h2>Dashboard</h2>
+      <h3 class="text-dimmed">Velkommen {{ username }}!</h3>
+    </div>
 
     <!-- QUIZ LISTE -->
-    <h3>Tilgængelige quizzer</h3>
+    <div class="quiz-list">
+      <h3>Tilgængelige quizzer</h3>
 
-    <ul v-if="quizzes.length">
-      <li v-for="quiz in quizzes" :key="quiz">
-        {{ quiz }}
+      <ul v-if="quizzes.length">
+        <li class="quiz-item" v-for="quiz in quizzes" :key="quiz">
+          {{ quiz }}
 
-        <button @click="startQuiz(quiz)">Start quiz</button>
-      </li>
-    </ul>
+          <button class="quiz-item-btn" @click="startQuiz(quiz)">
+            Start quiz
+          </button>
+        </li>
+      </ul>
 
-    <p v-else>Ingen quizzer fundet</p>
-
-    <hr />
+      <p v-else>Ingen quizzer fundet</p>
+    </div>
 
     <!-- RESULTATER -->
-    <h3>Mine resultater</h3>
+    <div class="results-section">
+      <h3>Mine resultater</h3>
 
-    <table v-if="results.length" class="results-table">
-      <thead>
-        <tr>
-          <th>Quiz</th>
-          <th>Score</th>
-          <th>Tid (sek)</th>
-          <th>Dato</th>
-        </tr>
-      </thead>
+      <table v-if="results.length" class="results-table">
+        <thead>
+          <tr>
+            <th>Quiz</th>
+            <th>Score</th>
+            <!-- <th>Tid (sek)</th> -->
+            <th>Dato</th>
+          </tr>
+        </thead>
 
-      <tbody>
-        <tr v-for="r in results" :key="r.attemptId[0]">
-          <td>{{ r.quizId[0] }}</td>
-          <td>{{ r.score[0] }}</td>
-          <td>{{ r.time[0] }}</td>
-          <td>{{ formatDate(r.date[0]) }}</td>
-        </tr>
-      </tbody>
-    </table>
+        <tbody>
+          <tr v-for="r in results" :key="r.attemptId[0]">
+            <td>{{ r.quizId[0] }}</td>
+            <td>{{ r.score[0] }}</td>
+            <!-- <td>{{ r.time[0] }}</td> -->
+            <td>{{ formatDate(r.date[0]) }}</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <p v-else>Du har ikke taget nogen quizzer endnu</p>
+      <p class="text-dimmed" v-else>Du har ikke taget nogen quizzer endnu</p>
+    </div>
   </div>
 </template>
 
@@ -107,25 +108,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.dashboard {
-  max-width: 700px;
-  margin: 2rem auto;
-}
-
-.results-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.results-table th,
-.results-table td {
-  border: 1px solid #ccc;
-  padding: 6px;
-}
-
-.results-table th {
-  background: #f0f0f0;
-}
-</style>
