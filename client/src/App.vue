@@ -2,7 +2,7 @@
 
 <template>
   <div id="container">
-    <h1>Quiz Platform</h1>
+    <!-- <h1>Quiz Platform</h1> -->
 
     <!-- Viser login, register eller dashboard baseret på currentView -->
     <!-- @login-success="gotoDashboard" lytter til event fra child component, som sender besked til app.vue om login lykkedes-->
@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       // currentView: "login", // default
-      currentView: "dashboard", // midlertidig for at teste admin view uden at skulle logge ind hver gang
+      currentView: "login", // midlertidig for at teste admin view uden at skulle logge ind hver gang
       selectedQuiz: null,
     };
   },
