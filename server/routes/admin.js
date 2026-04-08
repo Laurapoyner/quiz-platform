@@ -11,13 +11,13 @@
 
 // Håndterer alle admin endpoints (upload, delete, liste, resultater)
 
-import express from "express";
-import multer from "multer"; 
-import fs from "fs";
-import path from "path";
+const express = require("express");
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 
-import { readXML } from "../utils/xml.js";
-import { saveResult } from "../services/resultService.js";
+const { readXML } = require("../utils/xml");
+const { saveResult } = require("../services/resultService");
 
 const router = express.Router();
 
@@ -31,6 +31,13 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+
+
+//denne kode bruges kun til test
+router.get("/upload", (req, res) => {
+    res.send("Upload virker");
+});
+//slut her
 
 
 // POST /admin/upload
@@ -91,4 +98,4 @@ router.post("/results", async (req, res) => {
 });
 
 
-export default router;
+module.exports = router;

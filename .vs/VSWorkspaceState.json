@@ -1,7 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\client",
+    "\\data",
+    "\\data\\quizzes",
+    "\\server",
+    "\\server\\routes"
   ],
-  "SelectedNode": "\\C:\\Users\\laura\\Source\\Repos\\quiz-platform",
+  "SelectedNode": "\\server\\routes\\quiz.js",
   "PreviewInSolutionExplorer": false
 }

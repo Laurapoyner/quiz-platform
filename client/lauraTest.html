@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin Test</title>
+</head>
+<body>
+
+    <h2>Upload quiz</h2>
+    <form action="http://localhost:3000/api/admin/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="quiz" accept=".xml" />
+        <button type="submit">Upload</button>
+    </form>
+
+    <hr>
+
+    <h2>Quiz liste</h2>
+    <button onclick="loadQuizzes()">Hent quizzer</button>
+    <ul id="quizList"></ul>
+
+    <hr>
+
+    <h2>Slet quiz</h2>
+    <input id="deleteName" placeholder="filnavn.xml" />
+    <button onclick="deleteQuiz()">Slet</button>
+
+    <hr>
+
+    <h2>Resultater</h2>
+    <button onclick="loadResults()">Hent resultater</button>
+    <pre id="results"></pre>
+
+    <script>
+        async function loadQuizzes() {
+            const res = await fetch("http://localhost:3000/api/admin/quizzes");
+            const data = await res.json();
+
+            const list = document.getElementById("quizList");
+            list.innerHTML = "";
+
+            data.forEach(q => {
+                const li = document.createElement("li");
+                li.textContent = q;
+                list.appendChild(li);
+            });
+        }
+
+        async function deleteQuiz() {
+            const name = document.getElementById("deleteName").value;
+
+            await fetch(`http://localhost:3000/api/admin/quiz/${name}`, {
+                method: "DELETE"
+            });
+
+            alert("Slettet!");
+            loadQuizzes();
+        }
+
+        async function loadResults() {
+            const res = await fetch("http://localhost:3000/api/admin/results");
+            const data = await res.json();
+
+            document.getElementById("results").textContent =
+                JSON.stringify(data, null, 2);
+        }
+    </script>
+
+</body>
+</html>
