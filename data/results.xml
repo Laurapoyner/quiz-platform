@@ -1,0 +1,28 @@
+<results>
+	<result>
+		<attemptId>1-1712489000</attemptId>
+		<userId>1</userId>
+		<quizId>Operatorer</quizId>
+		<score>7</score>
+		<time>110</time>
+		<date>2026-04-07T09:30:00</date>
+	</result>
+
+	<result>
+		<attemptId>1-1712489600</attemptId>
+		<userId>1</userId>
+		<quizId>Operatorer</quizId>
+		<score>9</score>
+		<time>95</time>
+		<date>2026-04-07T10:00:00</date>
+	</result>
+
+	<result>
+		<attemptId>2-1712490200</attemptId>
+		<userId>2</userId>
+		<quizId>Operatorer</quizId>
+		<score>6</score>
+		<time>130</time>
+		<date>2026-04-07T10:30:00</date>
+	</result>
+</results>
