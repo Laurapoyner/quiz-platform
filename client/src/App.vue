@@ -1,32 +1,34 @@
 <!-- main vue app der håndterer navigation mellem login, register og dashboard views. -->
 
 <template>
-    <div id="container">
-        <!-- <h1>Quiz Platform</h1> -->
-        <!-- Viser login, register eller dashboard baseret på currentView -->
-        <!-- @login-success="gotoDashboard" lytter til event fra child component, som sender besked til app.vue om login lykkedes-->
-        <LoginView v-if="currentView === 'login'"
-                   @login-success="gotoDashboard"
-                   @go-to-register="gotoRegister" />
-        <RegisterView v-if="currentView === 'register'"
-                      @register-success="gotoDashboard" />
-        <DashboardView v-if="currentView === 'dashboard'" @start-quiz="startQuiz" />
+  <div id="container">
+    <LoginView 
+      v-if="currentView === 'login'"
+      @login-success="handleLoginSuccess" 
+      @go-to-register="gotoRegister" 
+    />
 
-        <!-- TO DO: <AdminView v-if="role === 'admin'" /> -->
-        <!-- <AdminView v-if="currentView === 'admin'" /> -->
-        <AdminView v-if="currentView === 'admin'" @start-quiz="startQuiz" />
+    <RegisterView 
+      v-if="currentView === 'register'"
+      @register-success="currentView = 'login'" 
+    />
 
-        <!-- TO DO:  <DashboardView
-      v-if="currentView === 'dashboard'"
-      @start-quiz="startQuiz"
-      @go-admin="currentView = 'admin'"
-      :user="loggedInUser"
-    /> -->
-        <QuizView v-if="currentView === 'quiz'"
-                  :quizName="selectedQuiz"
-                  @go-dashboard="gotoDashboard" />
-        <!-- <QuizView v-if="currentView === 'quiz'" /> -->
-        </div>
+    <DashboardView 
+      v-if="currentView === 'dashboard'" 
+      @start-quiz="startQuiz" 
+    />
+
+    <AdminView 
+      v-if="currentView === 'admin'" 
+      @start-quiz="startQuiz" 
+    />
+
+    <QuizView 
+      v-if="currentView === 'quiz'"
+      :quizName="selectedQuiz"
+      @go-dashboard="currentView = 'dashboard'" 
+    />
+  </div>
 </template>
 
 <script>
@@ -40,30 +42,36 @@ export default {
   components: { LoginView, RegisterView, DashboardView, AdminView, QuizView },
   data() {
     return {
-      // currentView: "login", // default
-      currentView: "login", // midlertidig for at teste admin view uden at skulle logge ind hver gang
+      currentView: "login",
       selectedQuiz: null,
+      userRole: null, // Vi tilføjer denne til at holde styr på rollen lokalt
     };
   },
   methods: {
-    // kaldes når login eller register er succesfuld
-      gotoDashboard() {
-          this.currentView = "";
-          this.$nextTick(() => {
-              this.currentView = "dashboard";
-          });
-      },
+    // Denne funktion styrer nu HELE trafikken efter login
+    handleLoginSuccess(userData) {
+      this.userRole = userData.role; // Gem rollen ("admin" eller "user")
+      
+      if (this.userRole === "admin") {
+        this.currentView = "admin";
+      } else {
+        this.currentView = "dashboard";
+      }
+    },
+    
     gotoRegister() {
       this.currentView = "register";
     },
-    handleLogin(user) {
-      this.user = user;
-      this.currentView = "dashboard";
-    },
+
     startQuiz(quizName) {
       this.selectedQuiz = quizName;
       this.currentView = "quiz";
     },
+
+    // En lille hjælper til at komme tilbage
+    gotoDashboard() {
+      this.currentView = this.userRole === 'admin' ? 'admin' : 'dashboard';
+    }
   },
 };
 </script>
