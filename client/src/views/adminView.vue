@@ -37,7 +37,7 @@
       <!--- Quiz liste --->
       <div>
         <h3>Uploadede quizzer</h3>
-        <div class="quiz-list">
+        <div class="quiz-list-admin">
           <ul v-if="quizzes.length">
             <li class="quiz-item" v-for="quiz in quizzes" :key="quiz">
               {{ quiz.replace(".xml", "") }}
