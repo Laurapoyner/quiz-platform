@@ -64,6 +64,13 @@
             <h3>Quiz afsluttet ✅</h3>
             <p>Dit svar er sendt til serveren</p>
         </div>
+
+        <button v-if="submitted"
+                @click="goBack"
+                class="back-btn">
+            Tilbage til dashboard
+        </button>
+
     </div>
 </template>
 
@@ -80,7 +87,6 @@
                 score: 0,
                 showResults: false,
 
-                //tid
                 startTime: null,
                 timeSpent: 0,
             };
@@ -89,7 +95,6 @@
         async mounted() {
             if (!this.quizName) return;
 
-            // start timer
             this.startTime = Date.now();
 
             try {
@@ -108,10 +113,13 @@
                     rawQuestions.map((q) => {
                         const answers = q.answer || [];
 
+                        // 🔥 AUTO detect multi vs single
+                        const correctCount = answers.filter(a => a.correct?.[0] === "True").length;
+
                         return {
                             id: q.id?.[0] || Math.random(),
                             questiontext: q.questiontext?.[0] || "",
-                            type: "single",
+                            type: correctCount > 1 ? "multi" : "single", // 🔥 NY
                             answers: shuffle(
                                 answers.map((a) => ({
                                     answertext: a.answertext?.[0] || "",
@@ -122,8 +130,9 @@
                     })
                 );
 
+                // 🔥 FIX: multi = [] / single = ""
                 this.questions.forEach((q) => {
-                    this.userAnswers[q.id] = "";
+                    this.userAnswers[q.id] = q.type === "multi" ? [] : "";
                 });
 
             } catch (err) {
@@ -137,19 +146,55 @@
                 this.showResults = true;
                 this.score = 0;
 
-                // beregn tid
                 this.timeSpent = Math.floor((Date.now() - this.startTime) / 1000);
 
-                // beregn score
+                // 🔥 NY SCORING LOGIK
                 this.questions.forEach((q) => {
-                    const correctIndex = q.answers.findIndex(a => a.correct);
 
-                    if (this.userAnswers[q.id] == correctIndex) {
-                        this.score++;
+                    if (q.type === "single") {
+                        const correctIndex = q.answers.findIndex(a => a.correct);
+
+                        if (this.userAnswers[q.id] == correctIndex) {
+                            this.score += 1;
+                        }
+                    }
+
+                    if (q.type === "multi") {
+                        const userAnswer = this.userAnswers[q.id] || [];
+
+                        const correctAnswers = q.answers
+                            .map((a, i) => a.correct ? i : null)
+                            .filter(i => i !== null);
+
+                        let correctChosen = 0;
+                        let wrongChosen = 0;
+
+                        userAnswer.forEach((index) => {
+                            if (correctAnswers.includes(index)) {
+                                correctChosen++;
+                            } else {
+                                wrongChosen++;
+                            }
+                        });
+
+                        let points = 0;
+
+                        if (correctChosen === 0 && wrongChosen === 0) points = 0;
+                        if (correctChosen === 1 && wrongChosen === 0) points = 0.5;
+                        if (correctChosen === 2 && wrongChosen === 0) points = 1;
+
+                        if (correctChosen === 0 && wrongChosen === 1) points = -0.5;
+                        if (correctChosen === 1 && wrongChosen === 1) points = 0;
+                        if (correctChosen === 2 && wrongChosen === 1) points = 0.5;
+
+                        if (correctChosen === 0 && wrongChosen === 2) points = -1;
+                        if (correctChosen === 1 && wrongChosen === 2) points = -0.5;
+                        if (correctChosen === 2 && wrongChosen === 2) points = 0;
+
+                        this.score += points;
                     }
                 });
 
-                // gem resultat
                 try {
                     await fetch("http://localhost:3000/api/quiz/submit", {
                         method: "POST",
@@ -168,16 +213,29 @@
                 }
             },
 
-            // farver svar
             getAnswerClass(q, index) {
                 if (!this.submitted) return "";
 
                 const correctIndex = q.answers.findIndex(a => a.correct);
 
-                if (index === correctIndex) return "correct";
-                if (this.userAnswers[q.id] == index) return "wrong";
+                if (q.type === "single") {
+                    if (index === correctIndex) return "correct";
+                    if (this.userAnswers[q.id] == index) return "wrong";
+                }
+
+                if (q.type === "multi") {
+                    const correct = q.answers[index].correct;
+                    const selected = this.userAnswers[q.id].includes(index);
+
+                    if (correct) return "correct";
+                    if (selected && !correct) return "wrong";
+                }
 
                 return "";
+            },
+
+            goBack() {
+                this.$emit("go-dashboard");
             }
         }
     };
@@ -236,4 +294,23 @@
         border-radius: 8px;
         font-weight: 600;
     }
+
+    .back-btn {
+        -webkit-appearance: none;
+        appearance: none;
+        border: 2px solid var(--border);
+        background: var(--border);
+        padding: 14px 20px;
+        cursor: pointer;
+        color: var(--bg);
+        width: 100%;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+        .back-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
 </style>

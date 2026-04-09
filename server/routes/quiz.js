@@ -1,47 +1,39 @@
-﻿//quiz
-/**
- * Midlertidig router
- * Skal udvides med rigtige endpoints
- */
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 
 const { startQuiz, answerQuestion } = require("../services/quizService");
-
-// start quiz
-router.post("/start", async (req, res) => {
-    const { quizId, user } = req.body;
-
-    const result = await startQuiz(quizId, user);
-
-    res.json(result);
-});
-
-// answer question
-router.post("/answer", (req, res) => {
-    const { sessionId, answer } = req.body;
-
-    const result = answerQuestion(sessionId, answer);
-
-    res.json(result);
-});
 
 const fs = require("fs");
 const path = require("path");
 const xml2js = require("xml2js");
 
-// GET hele quizzen (til frontend visning)
+
+// START QUIZ
+router.post("/start", async (req, res) => {
+    const { quizId, user } = req.body;
+
+    const result = await startQuiz(quizId, user);
+    res.json(result);
+});
+
+
+// ANSWER QUESTION
+router.post("/answer", (req, res) => {
+    const { sessionId, answer } = req.body;
+
+    const result = answerQuestion(sessionId, answer);
+    res.json(result);
+});
+
+
+// GET QUIZ (læser fra /data/quizzes)
 router.get("/:quizName", async (req, res) => {
     try {
         const quizName = req.params.quizName;
 
-        const filePath = path.join(
-            __dirname,
-            "..",
-            "data",
-            "quizzes",
-            `${quizName}.xml`
-        );
+        const filePath = path.join(__dirname, "../../data/quizzes", `${quizName}.xml`);
+
+        console.log("GET QUIZ PATH:", filePath);
 
         if (!fs.existsSync(filePath)) {
             return res.status(404).json({ error: "Quiz ikke fundet" });
@@ -51,18 +43,22 @@ router.get("/:quizName", async (req, res) => {
         const parsed = await xml2js.parseStringPromise(xmlData);
 
         res.json(parsed.quiz);
+
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Server fejl" });
     }
 });
 
-// gem resultat
+
+// GEM RESULTAT (læser/skriver i /data/results.xml)
 router.post("/submit", async (req, res) => {
     try {
-        const { quiz, user, score } = req.body;
+        const { quiz, user, score, time } = req.body;
 
-        const filePath = path.join(__dirname, "..", "data", "results.xml");
+        const filePath = path.join(__dirname, "../../data/results.xml");
+
+        console.log("SAVE RESULT PATH:", filePath);
 
         let resultsObj;
 
@@ -74,28 +70,27 @@ router.post("/submit", async (req, res) => {
             resultsObj = { results: { result: [] } };
         }
 
-        //  lav unikt attemptId
-        const timestamp = Date.now();
-        const attemptId = `${user}-${timestamp}`;
+        // unikt ID
+        const attemptId = `${user}-${Date.now()}`;
 
-        //  nyt resultat 
+        // resultat
         const newResult = {
-            attemptId: attemptId,
-            userId: user,
-            quizId: quiz,
-            score: score.toString(),
-            time: "0", // du kan forbedre senere
-            date: new Date().toISOString()
+            attemptId: [attemptId],
+            userId: [user],
+            quizId: [quiz],
+            score: [score.toString()],
+            time: [time ? time.toString() : "0"],
+            date: [new Date().toISOString()]
         };
 
-        //  sørg for array
+        // sørg for array findes
         if (!resultsObj.results.result) {
             resultsObj.results.result = [];
         }
 
         resultsObj.results.result.push(newResult);
 
-        // convert til XML
+        // gem XML
         const builder = new xml2js.Builder();
         const xml = builder.buildObject(resultsObj);
 

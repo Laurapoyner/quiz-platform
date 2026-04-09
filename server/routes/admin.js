@@ -57,7 +57,7 @@ router.post("/upload", upload.single("quiz"), (req, res) => {
 // GET /admin/quizzes
 // Returnerer liste af alle quiz filer
 router.get("/quizzes", (req, res) => {
-    const files = fs.readdirSync("./data/quizzes");
+    const files = fs.readdirSync(path.join(__dirname, "../../data/quizzes"));
     res.send(files);
 });
 
@@ -82,7 +82,7 @@ router.delete("/quiz/:name", (req, res) => {
 
 router.get("/results", async (req, res) => {
     try {
-        const data = await readXML("./data/results.xml");
+        const data = await readXML(path.join(__dirname, "../../data/results.xml"));
         res.send(data);
     } catch {
         res.send({ results: [] });
