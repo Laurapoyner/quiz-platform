@@ -2,11 +2,13 @@
   "ExpandedNodes": [
     "",
     "\\client",
-    "\\data",
+    "\\client\\src",
     "\\data\\quizzes",
     "\\server",
+    "\\server\\data",
+    "\\server\\data\\quizzes",
     "\\server\\routes"
   ],
-  "SelectedNode": "\\server\\routes\\quiz.js",
+  "SelectedNode": "\\client\\src\\App.vue",
   "PreviewInSolutionExplorer": false
 }
