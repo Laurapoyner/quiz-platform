@@ -11,7 +11,7 @@
 
       <ul v-if="quizzes.length">
         <li class="quiz-item" v-for="quiz in quizzes" :key="quiz">
-          {{ quiz }}
+          {{ quiz.replace(".xml", "") }}
 
           <button class="quiz-item-btn" @click="startQuiz(quiz)">
             Start quiz

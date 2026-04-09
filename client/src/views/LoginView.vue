@@ -1,6 +1,4 @@
 <!-- Comment: Dette er login-siden (default view). Når login lykkedes, vil den sende et event til parent component (app.vue) -->
-<!-- TO DO: skal kommunikere med password authentification -->
-
 <template>
   <div class="login-view">
     <h2>Log på</h2>

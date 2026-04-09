@@ -1,55 +1,89 @@
 <template>
+  <div class="topbar">
+    <h1>Quiz Platform<span class="accent">.</span></h1>
+  </div>
   <div class="admin">
-    <div>
-      <h2>Admin Panel</h2>
-      <h3 class="text-dimmed">Velkommen {{ username }}!</h3>
+    <div class="column">
+      <div>
+        <h2>Admin Panel</h2>
+        <h3 class="text-dimmed">Velkommen {{ username }}!</h3>
+      </div>
+
+      <!--- Upload quiz --->
+      <div class="divider">
+        <h3>Upload en ny quiz</h3>
+        <div class="upload">
+          <input
+            id="fileInput"
+            type="file"
+            @change="handleFile"
+            accept=".xml"
+            style="display: none"
+          />
+
+          <label for="fileInput" class="file-label">
+            Vælg en quiz
+            <p class="file-name">
+              {{ selectedFileName || "Quiz skal være typen .xml" }}
+            </p>
+          </label>
+
+          <button class="quiz-item-btn upload-btn" @click="uploadQuiz">
+            Upload
+          </button>
+        </div>
+      </div>
+
+      <!--- Quiz liste --->
+      <div>
+        <h3>Uploadede quizzer</h3>
+        <div class="quiz-list">
+          <ul v-if="quizzes.length">
+            <li class="quiz-item" v-for="quiz in quizzes" :key="quiz">
+              {{ quiz.replace(".xml", "") }}
+              <div class="admin-quiz-btns">
+                <button class="quiz-item-btn" @click="testQuiz(quiz)">
+                  Test Quiz
+                </button>
+                <button class="quiz-item-btn" @click="deleteQuiz(quiz)">
+                  Slet
+                </button>
+              </div>
+            </li>
+          </ul>
+          <p v-else>Ingen quizzer fundet</p>
+        </div>
+      </div>
     </div>
 
-    <!--- Upload quiz --->
-    <div>
-      <h3>Upload quiz</h3>
-
-      <input type="file" @change="handleFile" accept=".xml" />
-      <button @click="uploadQuiz">Upload</button>
-    </div>
-
-    <!--- Quiz liste --->
-    <div cladd="quiz-list">
-      <h3>Quiz liste</h3>
-
-      <ul v-if="quizzes.length">
-        <li class="quiz-item" v-for="quiz in quizzes" :key="quiz">
-          {{ quiz }}
-          <button class="quiz-item-btn" @click="deleteQuiz(quiz)">Slet</button>
-        </li>
-      </ul>
-      <p v-else>Ingen quizzer fundet</p>
-    </div>
-
-    <!-- TO DO: tilføj mulighed for at teste quizzer. api der kører quizzen -->
     <!-- Brugerresultater  -->
-    <div>
+
+    <div class="results-section">
       <h3>Brugerresultater</h3>
-      <table v-if="results.length" class="results-table">
-        <thead>
-          <tr>
-            <th>Bruger</th>
-            <th>Quiz</th>
-            <th>Score</th>
-            <th>Tid (sek)</th>
-            <th>Dato</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="r in results" :key="r.attemptId[0]">
-            <td>{{ r.userId[0] }}</td>
-            <td>{{ r.quizId[0] }}</td>
-            <td>{{ r.score[0] }}</td>
-            <td>{{ r.time[0] }}</td>
-            <td>{{ formatDate(r.date[0]) }}</td>
-          </tr>
-        </tbody>
-      </table>
+
+      <div class="results-table-container" v-if="results.length">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Bruger</th>
+              <th>Quiz</th>
+              <th>Score</th>
+              <th>Tid (sek)</th>
+              <th>Dato</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="r in results" :key="r.attemptId[0]">
+              <td class="userid">{{ r.userId[0] }}</td>
+              <td>{{ r.quizId[0] }}</td>
+              <td class="score">{{ r.score[0] }}</td>
+              <td>{{ r.time[0] }}</td>
+              <td>{{ formatDate(r.date[0]) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <p v-else>Ingen resultater endnu</p>
     </div>
   </div>
@@ -61,6 +95,7 @@ export default {
     return {
       username: "",
       selectedFile: null,
+      selectedFileName: "",
       quizzes: [],
       results: [],
     };
@@ -80,11 +115,13 @@ export default {
       this.$emit("start-quiz", quizName); // send quiznavnet op til App.vue
     },
     handleFile(event) {
-      this.selectedFile = event.target.files[0];
+      const file = event.target.files[0];
+      this.selectedFile = file;
+      this.selectedFileName = file ? file.name : "";
     },
 
     async uploadQuiz() {
-      if (!this.selectedFile) {
+      if (!this.selectedFileName) {
         alert("Vælg en fil først");
         return;
       }
@@ -101,7 +138,7 @@ export default {
         if (res.ok) {
           alert("Quiz uploadet!");
           this.selectedFile = null;
-          await this.loadQuizzes(); // opdater listen automatisk
+          await this.loadQuizzes();
         } else {
           const err = await res.text();
           alert("Upload fejl: " + err);
