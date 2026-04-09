@@ -103,13 +103,13 @@ export default {
         return;
       }
       //minimum længde på 6
-      if (this.password.length < 6) {
-        this.error = "Password skal være mindst 6 tegn";
+      if (this.password.length < 8) {
+        this.error = "Password skal være mindst 8 tegn";
         return;
       }
       try {
         // TO DO: Hvordan bliver bruger oprettet i systemet // send til rigtigt endpoint
-        const response = await fetch("http://localhost:3000/api/register", {
+        const response = await fetch("http://localhost:3000/api/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

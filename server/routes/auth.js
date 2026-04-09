@@ -56,13 +56,13 @@ router.post("/login", async (req, res) => {
   const user = users.find((u) => u.username === username);
 
   if (!user) {
-    return res.status(401).json({ message: "Invalid login" });
+    return res.status(401).json({ message: "Forkert brugernavn eller adgangskode" });
   }
 
   const valid = await comparePassword(password, user.password);
 
   if (!valid) {
-    return res.status(401).json({ message: "Invalid login" });
+    return res.status(401).json({ message: "Forkert brugernavn eller adgangskode" });
   }
 
   const token = jwt.sign(
