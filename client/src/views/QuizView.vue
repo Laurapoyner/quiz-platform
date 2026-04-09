@@ -113,7 +113,7 @@
                     rawQuestions.map((q) => {
                         const answers = q.answer || [];
 
-                        // 🔥 AUTO detect multi vs single
+                        // auto detect multi vs single
                         const correctCount = answers.filter(a => a.correct?.[0] === "True").length;
 
                         return {
@@ -130,7 +130,7 @@
                     })
                 );
 
-                // 🔥 FIX: multi = [] / single = ""
+                //  multi = [] / single = ""
                 this.questions.forEach((q) => {
                     this.userAnswers[q.id] = q.type === "multi" ? [] : "";
                 });
@@ -148,7 +148,7 @@
 
                 this.timeSpent = Math.floor((Date.now() - this.startTime) / 1000);
 
-                // 🔥 NY SCORING LOGIK
+                // score logik
                 this.questions.forEach((q) => {
 
                     if (q.type === "single") {
