@@ -98,6 +98,13 @@ export default {
     };
   },
 
+  computed: {
+    isAdmin() {
+      return localStorage.getItem("role") === "admin";
+    }
+  },
+
+
   async mounted() {
     if (!this.quizName) return;
 
@@ -147,11 +154,6 @@ export default {
     }
   },
 
-computed: {
-  isAdmin() {
-    return localStorage.getItem("role") === "admin";
-  }
-},
 
   methods: {
     async submitQuiz() {
