@@ -70,10 +70,13 @@ export default {
         localStorage.setItem("token", data.token);
         // gem brugernavn
         localStorage.setItem("username", this.username);
+        // gem rolle
+        localStorage.setItem("role", data.role);
 
         // Event: fortæl App.vue at login var succesfuldt. emit sender opad.
         this.$emit("login-success", {
           username: this.username,
+          role: data.role
         });
       } catch (err) {
         this.error = "Server fejl: " + err.message;
