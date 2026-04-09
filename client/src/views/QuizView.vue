@@ -6,6 +6,7 @@
             <div v-for="(q, index) in questions"
                  :key="q.id"
                  class="question-block">
+
                 <p>
                     {{ index + 1 }}.
                     <span v-html="q.questiontext || 'Spørgsmål mangler'"></span>
@@ -15,7 +16,8 @@
                 <div v-if="q.type === 'single'">
                     <label v-for="(a, aIndex) in q.answers"
                            :key="aIndex"
-                           class="answer">
+                           class="answer"
+                           :class="getAnswerClass(q, aIndex)">
                         <input type="radio"
                                :name="`q-${q.id}`"
                                :value="aIndex"
@@ -29,7 +31,8 @@
                 <div v-else-if="q.type === 'multi'">
                     <label v-for="(a, aIndex) in q.answers"
                            :key="aIndex"
-                           class="answer">
+                           class="answer"
+                           :class="getAnswerClass(q, aIndex)">
                         <input type="checkbox"
                                :value="aIndex"
                                v-model="userAnswers[q.id]"
@@ -51,6 +54,12 @@
             </button>
         </form>
 
+        <!-- RESULTAT -->
+        <div v-if="showResults" class="results-summary">
+            <h3>Resultat: {{ score }} / {{ questions.length }}</h3>
+            <p>Tid: {{ timeSpent }} sekunder</p>
+        </div>
+
         <div v-if="submitted" class="results-summary">
             <h3>Quiz afsluttet ✅</h3>
             <p>Dit svar er sendt til serveren</p>
@@ -68,11 +77,20 @@
                 questions: [],
                 userAnswers: {},
                 submitted: false,
+                score: 0,
+                showResults: false,
+
+                //tid
+                startTime: null,
+                timeSpent: 0,
             };
         },
 
         async mounted() {
             if (!this.quizName) return;
+
+            // start timer
+            this.startTime = Date.now();
 
             try {
                 const res = await fetch(
@@ -80,15 +98,12 @@
                 );
                 const data = await res.json();
 
-                // Titel fix (fjerner [ ])
                 this.quizTitle = data.topic?.[0] || "Quiz";
 
                 const rawQuestions = data.question || [];
 
-                // 🔥 shuffle funktion
                 const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
 
-                // 🔥 map + random rækkefølge
                 this.questions = shuffle(
                     rawQuestions.map((q) => {
                         const answers = q.answer || [];
@@ -100,13 +115,13 @@
                             answers: shuffle(
                                 answers.map((a) => ({
                                     answertext: a.answertext?.[0] || "",
+                                    correct: a.correct?.[0] === "True"
                                 }))
                             ),
                         };
                     })
                 );
 
-                // init svar
                 this.questions.forEach((q) => {
                     this.userAnswers[q.id] = "";
                 });
@@ -119,7 +134,22 @@
         methods: {
             async submitQuiz() {
                 this.submitted = true;
+                this.showResults = true;
+                this.score = 0;
 
+                // beregn tid
+                this.timeSpent = Math.floor((Date.now() - this.startTime) / 1000);
+
+                // beregn score
+                this.questions.forEach((q) => {
+                    const correctIndex = q.answers.findIndex(a => a.correct);
+
+                    if (this.userAnswers[q.id] == correctIndex) {
+                        this.score++;
+                    }
+                });
+
+                // gem resultat
                 try {
                     await fetch("http://localhost:3000/api/quiz/submit", {
                         method: "POST",
@@ -129,14 +159,27 @@
                         body: JSON.stringify({
                             quiz: this.quizName,
                             user: localStorage.getItem("username"),
-                            answers: this.userAnswers,
+                            score: this.score,
+                            time: this.timeSpent
                         }),
                     });
                 } catch (err) {
                     console.error("Fejl ved submit:", err);
                 }
             },
-        },
+
+            // farver svar
+            getAnswerClass(q, index) {
+                if (!this.submitted) return "";
+
+                const correctIndex = q.answers.findIndex(a => a.correct);
+
+                if (index === correctIndex) return "correct";
+                if (this.userAnswers[q.id] == index) return "wrong";
+
+                return "";
+            }
+        }
     };
 </script>
 
@@ -163,6 +206,16 @@
     .answer {
         display: block;
         margin-bottom: 0.5rem;
+        padding: 4px;
+        border-radius: 6px;
+    }
+
+    .correct {
+        background-color: #c8f7c5;
+    }
+
+    .wrong {
+        background-color: #f7c5c5;
     }
 
     form {
@@ -173,5 +226,14 @@
 
     button {
         margin-top: 2rem;
+    }
+
+    .results-summary {
+        margin-top: 20px;
+        padding: 16px;
+        background: rgba(2, 204, 137, 0.159);
+        border: 1px solid rgba(2, 204, 137, 1);
+        border-radius: 8px;
+        font-weight: 600;
     }
 </style>

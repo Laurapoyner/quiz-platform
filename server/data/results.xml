@@ -1,28 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <results>
-	<result>
-		<attemptId>1-1712489000</attemptId>
-		<userId>1</userId>
-		<quizId>Operatorer</quizId>
-		<score>7</score>
-		<time>110</time>
-		<date>2026-04-07T09:30:00</date>
-	</result>
-
-	<result>
-		<attemptId>1-1712489600</attemptId>
-		<userId>1</userId>
-		<quizId>Operatorer</quizId>
-		<score>9</score>
-		<time>95</time>
-		<date>2026-04-07T10:00:00</date>
-	</result>
-
-	<result>
-		<attemptId>2-1712490200</attemptId>
-		<userId>2</userId>
-		<quizId>Operatorer</quizId>
-		<score>6</score>
-		<time>130</time>
-		<date>2026-04-07T10:30:00</date>
-	</result>
+  <result>
+    <attemptId>1-1712489000</attemptId>
+    <userId>1</userId>
+    <quizId>Operatorer</quizId>
+    <score>7</score>
+    <time>110</time>
+    <date>2026-04-07T09:30:00</date>
+  </result>
+  <result>
+    <attemptId>1-1712489600</attemptId>
+    <userId>1</userId>
+    <quizId>Operatorer</quizId>
+    <score>9</score>
+    <time>95</time>
+    <date>2026-04-07T10:00:00</date>
+  </result>
+  <result>
+    <attemptId>2-1712490200</attemptId>
+    <userId>2</userId>
+    <quizId>Operatorer</quizId>
+    <score>6</score>
+    <time>130</time>
+    <date>2026-04-07T10:30:00</date>
+  </result>
+  <result>
+    <attemptId>null-1775728564003</attemptId>
+    <userId/>
+    <quizId>operatorer1</quizId>
+    <score>1</score>
+    <time>0</time>
+    <date>2026-04-09T09:56:04.003Z</date>
+  </result>
 </results>
