@@ -4,7 +4,7 @@ import { readXML, writeXML } from "../utils/xml.js";
 
 // Gemmer et nyt resultat i results.xml
 export async function saveResult(result) {
-    const path = "./data/results.xml";
+    const path = new URL("../../data/results.xml", import.meta.url).pathname;
 
     let data;
 

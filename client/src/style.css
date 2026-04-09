@@ -287,7 +287,7 @@ button[type="submit"]:hover {
 
   max-height: 250px;
   overflow-y: auto;
-padding-right: 8px;
+  padding-right: 8px;
   border: 1px;
   border-radius: 6px;
 }
@@ -297,7 +297,7 @@ padding-right: 8px;
 }
 
 .quiz-list::-webkit-scrollbar-thumb {
-  background-color: v;ar(--accent);
+  background-color: var(--accent);
   border-radius: 4px;
 }
 
@@ -373,49 +373,47 @@ ul {
 }
 
 .results-table-container {
-  max-height: 400px; 
+  max-height: 400px;
   overflow-y: auto;
-
 }
 
 /* Table styling */
 .results-table {
   width: 100%;
-  border-collapse: separate; 
+  border-collapse: separate;
   border-spacing: 0 10px;
   font-size: 14px;
-  border-width: none!important;
+  border-width: none !important;
 }
 
 .results-table td:first-child {
   text-align: left;
   padding: 12px 15px;
   background-color: var(--blue-opacity);
-  border-radius: 6px 0px 0px 6px; 
+  border-radius: 6px 0px 0px 6px;
 }
 .results-table td:last-child {
-  border-radius: 0px 6px 6px 0px; 
+  border-radius: 0px 6px 6px 0px;
 }
 
 .results-table th {
   background-color: var(--accent);
   color: white;
   position: sticky;
-  top: 0; 
+  top: 0;
   z-index: 1;
 }
 
 .results-table th:first-child {
-  border-radius: 6px 0px 0px 6px; 
+  border-radius: 6px 0px 0px 6px;
 }
 .results-table th:last-child {
-  border-radius: 0px 6px 6px 0px; 
+  border-radius: 0px 6px 6px 0px;
 }
 
 .results-table tbody tr td {
   background-color: var(--blue-opacity);
 }
-
 
 .score {
   font-weight: bold;
