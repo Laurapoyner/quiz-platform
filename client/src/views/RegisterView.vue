@@ -126,6 +126,7 @@ export default {
         }
 
         // Fortæl App.vue at registrering var succesfuldt
+        localStorage.setItem("username", this.username); 
         this.$emit("register-success");
       } catch (err) {
         this.error = "Server fejl: " + err.message;

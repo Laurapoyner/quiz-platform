@@ -29,7 +29,7 @@ router.post("/register", async (req, res) => {
 
   const exists = users.find((u) => u.username === username);
   if (exists) {
-    return res.status(400).json({ message: "User already exists" });
+    return res.status(400).json({ message: "Brugernavn findes allerede" });
   }
 
   const hashed = await hashPassword(password);
