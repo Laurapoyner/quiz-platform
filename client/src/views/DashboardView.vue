@@ -96,10 +96,10 @@ export default {
       }
     },
 
-    startQuiz(quizName) {
-      // send quiz op til App.vue
-      this.$emit("start-quiz", quizName);
-    },
+        startQuiz(quizName) {
+            const cleanName = quizName.replace(".xml", "");
+            this.$emit("start-quiz", cleanName);
+      },
 
     formatDate(dateStr) {
       const d = new Date(dateStr);
