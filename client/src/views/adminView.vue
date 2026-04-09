@@ -1,35 +1,40 @@
 <template>
+  <div class="topbar">
+    <h1>Quiz Platform<span class="accent">.</span></h1>
+  </div>
   <div class="admin">
-    <div>
-      <h2>Admin Panel</h2>
-      <h3 class="text-dimmed">Velkommen {{ username }}!</h3>
+    <div class="column">
+      <div>
+        <h2>Admin Panel</h2>
+        <h3 class="text-dimmed">Velkommen {{ username }}!</h3>
+      </div>
+
+      <!--- Upload quiz --->
+      <div class="upload">
+        <h3>Upload en ny quiz</h3>
+        <input type="file" @change="handleFile" accept=".xml" />
+        <button class="quiz-item-btn" @click="uploadQuiz">Upload</button>
+      </div>
+
+      <!--- Quiz liste --->
+      <div class="quiz-list">
+        <h3>Quiz liste</h3>
+
+        <ul v-if="quizzes.length">
+          <li class="quiz-item" v-for="quiz in quizzes" :key="quiz">
+            {{ quiz.replace(".xml", "") }}
+            <button class="quiz-item-btn" @click="testQuiz(quiz)">Test</button>
+            <button class="quiz-item-btn" @click="deleteQuiz(quiz)">
+              Slet
+            </button>
+          </li>
+        </ul>
+        <p v-else>Ingen quizzer fundet</p>
+      </div>
     </div>
 
-    <!--- Upload quiz --->
-    <div>
-      <h3>Upload quiz</h3>
-
-      <input type="file" @change="handleFile" accept=".xml" />
-      <button @click="uploadQuiz">Upload</button>
-    </div>
-
-    <!--- Quiz liste --->
-    <div class="quiz-list">
-      <h3>Quiz liste</h3>
-
-      <ul v-if="quizzes.length">
-        <li class="quiz-item" v-for="quiz in quizzes" :key="quiz">
-          {{ quiz.replace(".xml", "") }}
-          <button class="quiz-item-btn" @click="testQuiz(quiz)">Test</button>
-          <button class="quiz-item-btn" @click="deleteQuiz(quiz)">Slet</button>
-        </li>
-      </ul>
-      <p v-else>Ingen quizzer fundet</p>
-    </div>
-
-    <!-- TO DO: tilføj mulighed for at teste quizzer. api der kører quizzen -->
     <!-- Brugerresultater  -->
-    <div>
+    <div class="column">
       <h3>Brugerresultater</h3>
       <table v-if="results.length" class="results-table">
         <thead>

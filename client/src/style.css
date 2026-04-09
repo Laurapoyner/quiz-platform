@@ -1,22 +1,13 @@
 :root {
   --text: #6b6375;
-  --text-h: #1c2f3d;
-  --bg: #fff;
-  --border: #1c2f3d;
-  --code-bg: #f4f3ec;
+  --white: #fff;
+  --darkblue: #1c2f3d;
+  --blue-opacity: rgba(2, 204, 137, 0.159);
   --accent: rgba(2, 204, 137, 1);
-  --accent-50: rgba(2, 204, 137, 0.159);
-  --accent-border: rgba(2, 204, 137, 1);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
-  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
   letter-spacing: 0.18px;
-  color: var(--text);
-  background: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -42,41 +33,35 @@ body {
     rgba(2, 204, 137, 0.5) 0%,
     rgba(255, 255, 255, 1) 100%
   );
-  color: var(--text-h);
+  color: var(--darkblue);
 }
 
 #app {
   font-family: Arial, sans-serif;
-  max-width: 1000px;
-  width: fit-content;
-  margin: 2rem auto;
-  background-color: var(--bg);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   margin: 0 auto;
-  text-align: center;
   border-radius: 8px;
   box-shadow: var(--shadow);
-  padding: 40px;
 }
 
 h1,
 h2 {
-  font-family: var(--heading);
   font-weight: 600;
-  color: var(--text-h);
 }
 
 h1 {
   font-size: 42px;
-  margin: 32px 0;
+  color: var(--white);
+  margin: 0;
 }
 
 h2 {
   font-size: 28px;
   line-height: 1;
   margin: 0 0 8px;
+  color: var(--darkblue);
 }
 
 h3 {
@@ -109,6 +94,10 @@ button {
   margin-left: 10px;
 }
 
+.accent {
+  color: var(--accent);
+}
+
 /** FORM ELEMENTS *****************/
 
 form {
@@ -133,27 +122,27 @@ label {
 input[type="text"],
 input[type="password"] {
   padding: 14px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--darkblue);
   border-radius: 8px;
   font-size: 16px;
-  border-color: var(--border);
+  border-color: var(--darkblue);
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus {
   outline: none;
-  border: 2px solid var(--border);
+  border: 2px solid var(--darkblue);
 }
 
 button[type="submit"] {
   -webkit-appearance: none; /* For Safari/Chrome */
   appearance: none;
-  border: 2px solid var(--border) !important;
-  background: var(--border) !important;
+  border: 2px solid var(--darkblue) !important;
+  background: var(--darkblue) !important;
   padding: 14px 20px !important;
   cursor: pointer;
   margin: 0 0 20px 0;
-  color: var(--bg);
+  color: var(--white);
   width: 100%;
   border-radius: 8px;
   transition: background border 0.3s ease;
@@ -162,7 +151,7 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
   background: var(--accent) !important;
-  border: 2px solid var(--accent-50) !important;
+  border: 2px solid var(--blue-opacity) !important;
 }
 
 .password-rules p {
@@ -193,21 +182,36 @@ button[type="submit"]:hover {
 }
 
 .text-link-btn:hover {
-  background: var(--accent-50);
+  background: var(--blue-opacity);
 }
 
 /**** DASHBOARD *****/
 
 .dashboard,
-#container,
 .admin {
+  width: 1200px;
+  height: 600px;
   text-align: left;
   gap: 10px;
   display: flex;
   flex-direction: column;
-  max-width: 700px;
-  min-width: 500px;
   margin: 0 auto;
+  background-color: var(--white);
+  padding: 40px;
+  t
+  border-radius: 0 0 8px 8px;
+}
+
+.admin {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+.column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .results-table {
@@ -224,6 +228,25 @@ button[type="submit"]:hover {
 .results-table th {
   background: #f0f0f0;
 }
+
+/** Upload files **/
+.upload {
+  border: 1px dashed var(--darkblue);
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="file"] {
+  margin-top: 10px; 
+   border: 1px dashed var(--darkblue);
+  padding: 10px;
+  border-radius: 6px;
+  background-color: var(--blue-opacity);
+  
+}
+
 
 /**quiz list**/
 
@@ -245,7 +268,7 @@ ul {
   align-items: center;
   padding: 10px;
   /* border: 1px solid #ccc; */
-  border: 1px solid var(--border);
+  border: 1px solid var(--darkblue);
   border-radius: 6px;
   margin-bottom: 10px;
   width: 100%;
@@ -257,11 +280,12 @@ ul {
 .quiz-item-btn {
   -webkit-appearance: none;
   appearance: none;
-  border: 1px solid var(--border) !important;
+  border: 1px solid var(--darkblue) !important;
   background: none !important;
   padding: 14px 18px !important;
+  margin: 0px;
   cursor: pointer;
-  color: var(--text-h);
+  color: var(--darkblue);
   border-radius: 6px;
   transition: background color 0.3s ease;
   font-weight: 600;
@@ -269,6 +293,12 @@ ul {
 
 .quiz-item-btn:hover {
   background: var(--accent) !important;
-  color: var(--bg);
+  color: var(--white);
   border: 1px solid var(--accent) !important;
+}
+
+.topbar {
+  background-color: var(--darkblue);
+  padding: 40px;
+  border-radius: 8px 8px 0 0;
 }
