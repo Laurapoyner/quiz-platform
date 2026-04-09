@@ -35,7 +35,6 @@
           <tr>
             <th>Quiz</th>
             <th>Score</th>
-            <!-- <th>Tid (sek)</th> -->
             <th>Dato</th>
           </tr>
         </thead>
@@ -43,8 +42,7 @@
         <tbody>
           <tr v-for="r in results" :key="r.attemptId[0]">
             <td>{{ r.quizId[0] }}</td>
-            <td>{{ r.score[0] }}</td>
-            <!-- <td>{{ r.time[0] }}</td> -->
+            <td class="score">{{ r.score[0] }}</td>
             <td>{{ formatDate(r.date[0]) }}</td>
           </tr>
         </tbody>

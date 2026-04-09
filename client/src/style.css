@@ -288,8 +288,7 @@ button[type="submit"]:hover {
   display: flex;
   flex-direction: column;
   gap: 10px;
-
-  max-height: 250px;
+  max-height: 450px;
   overflow-y: auto;
   padding-right: 8px;
   border: 1px;
@@ -374,6 +373,7 @@ ul {
   border: 1px solid var(--darkblue);
   padding: 20px;
   border-radius: 8px;
+  min-width: 500px;
 }
 
 .results-table-container {
@@ -406,6 +406,7 @@ ul {
   position: sticky;
   top: 0;
   z-index: 1;
+  text-align: left;
 }
 
 .results-table th:first-child {
