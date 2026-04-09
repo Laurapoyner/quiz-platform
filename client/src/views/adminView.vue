@@ -112,7 +112,8 @@ export default {
 
   methods: {
     testQuiz(quizName) {
-      this.$emit("start-quiz", quizName); // send quiznavnet op til App.vue
+      const cleanName = quizName.replace(".xml", "");
+      this.$emit("start-quiz", cleanName);
     },
     handleFile(event) {
       const file = event.target.files[0];
