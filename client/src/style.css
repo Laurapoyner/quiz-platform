@@ -33,7 +33,7 @@ body {
     rgba(2, 204, 137, 0.5) 0%,
     rgba(255, 255, 255, 1) 100%
   );
-  color: var(--darkblue);
+  color: var(--text-h);
 }
 
 #app {
@@ -198,7 +198,7 @@ button[type="submit"]:hover {
   margin: 0 auto;
   background-color: var(--white);
   padding: 40px;
-  t
+
   border-radius: 0 0 8px 8px;
 }
 
@@ -239,14 +239,12 @@ button[type="submit"]:hover {
 }
 
 input[type="file"] {
-  margin-top: 10px; 
-   border: 1px dashed var(--darkblue);
+  margin-top: 10px;
+  border: 1px dashed var(--darkblue);
   padding: 10px;
   border-radius: 6px;
   background-color: var(--blue-opacity);
-  
 }
-
 
 /**quiz list**/
 
@@ -301,4 +299,16 @@ ul {
   background-color: var(--darkblue);
   padding: 40px;
   border-radius: 8px 8px 0 0;
+}
+
+.question-block {
+  margin-bottom: 2rem;
+}
+
+.question-block p {
+  font-weight: bold;
+}
+
+.container {
+  padding: 2rem;
 }

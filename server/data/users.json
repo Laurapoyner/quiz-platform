@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "id": 1775726690686,
+    "username": "Sørenspark",
+    "password": "$2b$10$wutYRhNHAwV258Ja77YnJu3Fn7fWW.UIhRA5eLtIVSBXRvQnpstw.",
+    "role": "admin"
+  },
+  {
+    "id": 1775728347141,
+    "username": "Annemette",
+    "password": "$2b$10$NGuq9y.mNXKjd.048MNMg.ps2WPaK8.Mu4JMlNZ/xY4HOyKePJhYW",
+    "role": "user"
+  },
+  {
+    "id": 1775731393217,
+    "username": "Laura",
+    "password": "$2b$10$pASst/nPgSdLSsbafBmYfOpz6gQ3PHkH0Wvw4FyRh7Z8C8XUEG4s.",
+    "role": "user"
+  },
+  {
+    "id": 1775731591729,
+    "username": "Laura1",
+    "password": "$2b$10$1F054kZfyEgfo2uTKCJYBO0bKxBMm7pR2wncpJ077LknudcosReu6",
+    "role": "user"
+  },
+  {
+    "id": 1775731818554,
+    "username": "Ulla",
+    "password": "$2b$10$lNgTzxgkNkocHMKgCQ3T7.5CZM0QUG4TsBj4dv7fah80s8kp0BH.O",
+    "role": "user"
+  }
+]

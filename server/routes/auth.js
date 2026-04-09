@@ -29,7 +29,7 @@ router.post("/register", async (req, res) => {
 
   const exists = users.find((u) => u.username === username);
   if (exists) {
-    return res.status(400).json({ message: "User already exists" });
+    return res.status(400).json({ message: "Brugernavn findes allerede" });
   }
 
   const hashed = await hashPassword(password);
@@ -56,13 +56,13 @@ router.post("/login", async (req, res) => {
   const user = users.find((u) => u.username === username);
 
   if (!user) {
-    return res.status(401).json({ message: "Invalid login" });
+    return res.status(401).json({ message: "Forkert brugernavn eller adgangskode" });
   }
 
   const valid = await comparePassword(password, user.password);
 
   if (!valid) {
-    return res.status(401).json({ message: "Invalid login" });
+    return res.status(401).json({ message: "Forkert brugernavn eller adgangskode" });
   }
 
   const token = jwt.sign(
