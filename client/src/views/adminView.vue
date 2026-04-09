@@ -14,12 +14,13 @@
     </div>
 
     <!--- Quiz liste --->
-    <div cladd="quiz-list">
+    <div class="quiz-list">
       <h3>Quiz liste</h3>
 
       <ul v-if="quizzes.length">
         <li class="quiz-item" v-for="quiz in quizzes" :key="quiz">
-          {{ quiz }}
+          {{ quiz.replace(".xml", "") }}
+          <button class="quiz-item-btn" @click="testQuiz(quiz)">Test</button>
           <button class="quiz-item-btn" @click="deleteQuiz(quiz)">Slet</button>
         </li>
       </ul>

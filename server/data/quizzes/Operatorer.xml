@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <quiz>
 <topic>Operatorer</topic>
+
 <question>
 <id>1</id>
 <type>multichoice</type>
@@ -22,6 +23,7 @@
 <correct>False</correct>
 </answer>
 </question>
+
 <question>
 <id>2</id>
 <type>multichoice</type>
@@ -43,6 +45,8 @@
 <correct>False</correct>
 </answer>
 </question>
+
+
 <question>
 <id>3</id>
 <type>multichoice</type>
@@ -64,6 +68,7 @@
 <correct>False</correct>
 </answer>
 </question>
+
 <question>
 <id>4</id>
 <type>multichoice</type>
@@ -85,6 +90,7 @@
 <correct>True</correct>
 </answer>
 </question>
+
 <question>
 <id>5</id>
 <type>multichoice</type>
@@ -106,6 +112,7 @@
 <correct>True</correct>
 </answer>
 </question>
+
 <question>
 <id>6</id>
 <type>multichoice</type>
@@ -127,6 +134,7 @@
 <correct>True</correct>
 </answer>
 </question>
+
 <question>
 <id>7</id>
 <type>multichoice</type>
