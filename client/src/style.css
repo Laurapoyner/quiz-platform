@@ -1,8 +1,9 @@
 :root {
-  --text: #6b6375;
+  --text: #38424a;
   --white: #fff;
   --darkblue: #1c2f3d;
   --blue-opacity: rgba(2, 204, 137, 0.159);
+  --grey: #38424a2a;
   --accent: rgba(2, 204, 137, 1);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
@@ -189,16 +190,18 @@ button[type="submit"]:hover {
 
 .dashboard,
 .admin {
+  max-width: 1200px;
   width: 1200px;
   height: 600px;
-  text-align: left;
-  gap: 10px;
+  /* text-align: left; */
+  gap: 40px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   margin: 0 auto;
   background-color: var(--white);
   padding: 40px;
   border-radius: 0 0 8px 8px;
+  flex-wrap: wrap;
 }
 
 .login-view,
@@ -234,7 +237,6 @@ button[type="submit"]:hover {
 
 .results-table th,
 .results-table td {
-  border: 1px solid #ccc;
   padding: 6px;
 }
 
@@ -262,6 +264,7 @@ button[type="submit"]:hover {
   background-color: var(--blue-opacity);
   font-size: 14px;
   font-weight: 600;
+  transition: background color 0.3s ease;
 
   .file-name {
     margin-top: 8px;
@@ -281,6 +284,25 @@ button[type="submit"]:hover {
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  max-height: 250px;
+  overflow-y: auto;
+padding-right: 8px;
+  border: 1px;
+  border-radius: 6px;
+}
+
+.quiz-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.quiz-list::-webkit-scrollbar-thumb {
+  background-color: v;ar(--accent);
+  border-radius: 4px;
+}
+
+.quiz-list::-webkit-scrollbar-track {
+  background: var(--grey);
 }
 
 ul {
@@ -302,6 +324,11 @@ ul {
 
   font-size: 14px;
   font-weight: 600;
+}
+
+.admin-quiz-btns {
+  display: flex;
+  gap: 10px;
 }
 
 .quiz-item-btn {
@@ -338,6 +365,62 @@ ul {
   font-weight: bold;
 }
 
-.container {
-  padding: 2rem;
+/***** brugerresultater *****/
+.results-section {
+  border: 1px solid var(--darkblue);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.results-table-container {
+  max-height: 400px; 
+  overflow-y: auto;
+
+}
+
+/* Table styling */
+.results-table {
+  width: 100%;
+  border-collapse: separate; 
+  border-spacing: 0 10px;
+  font-size: 14px;
+  border-width: none!important;
+}
+
+.results-table td:first-child {
+  text-align: left;
+  padding: 12px 15px;
+  background-color: var(--blue-opacity);
+  border-radius: 6px 0px 0px 6px; 
+}
+.results-table td:last-child {
+  border-radius: 0px 6px 6px 0px; 
+}
+
+.results-table th {
+  background-color: var(--accent);
+  color: white;
+  position: sticky;
+  top: 0; 
+  z-index: 1;
+}
+
+.results-table th:first-child {
+  border-radius: 6px 0px 0px 6px; 
+}
+.results-table th:last-child {
+  border-radius: 0px 6px 6px 0px; 
+}
+
+.results-table tbody tr td {
+  background-color: var(--blue-opacity);
+}
+
+
+.score {
+  font-weight: bold;
+}
+
+.userid {
+  font-weight: bold;
 }
