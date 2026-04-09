@@ -1,27 +1,31 @@
 <template>
+  <div class="topbar">
+    <h1>Quiz Platform<span class="accent">.</span></h1>
+  </div>
   <div class="dashboard">
-    <div>
-      <h2>Dashboard</h2>
-      <h3 class="text-dimmed">Velkommen {{ username }}!</h3>
+    <div class="column">
+      <div>
+        <h2>Dashboard</h2>
+        <h3 class="text-dimmed">Velkommen {{ username }}!</h3>
+      </div>
+
+      <!-- QUIZ LISTE -->
+      <div class="quiz-list">
+        <h3>Tilgængelige quizzer</h3>
+
+        <ul v-if="quizzes.length">
+          <li class="quiz-item" v-for="quiz in quizzes" :key="quiz">
+            {{ quiz.replace(".xml", "") }}
+
+            <button class="quiz-item-btn" @click="startQuiz(quiz)">
+              Start quiz
+            </button>
+          </li>
+        </ul>
+
+        <p v-else>Ingen quizzer fundet</p>
+      </div>
     </div>
-
-    <!-- QUIZ LISTE -->
-    <div class="quiz-list">
-      <h3>Tilgængelige quizzer</h3>
-
-      <ul v-if="quizzes.length">
-        <li class="quiz-item" v-for="quiz in quizzes" :key="quiz">
-          {{ quiz.replace(".xml", "") }}
-
-          <button class="quiz-item-btn" @click="startQuiz(quiz)">
-            Start quiz
-          </button>
-        </li>
-      </ul>
-
-      <p v-else>Ingen quizzer fundet</p>
-    </div>
-
     <!-- RESULTATER -->
     <div class="results-section">
       <h3>Mine resultater</h3>
@@ -96,10 +100,10 @@ export default {
       }
     },
 
-        startQuiz(quizName) {
-            const cleanName = quizName.replace(".xml", "");
-            this.$emit("start-quiz", cleanName);
-      },
+    startQuiz(quizName) {
+      const cleanName = quizName.replace(".xml", "");
+      this.$emit("start-quiz", cleanName);
+    },
 
     formatDate(dateStr) {
       const d = new Date(dateStr);

@@ -208,6 +208,10 @@ button[type="submit"]:hover {
 .register-view {
   width: 700px;
 
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
   text-align: left;
   gap: 10px;
   display: flex;
@@ -215,7 +219,7 @@ button[type="submit"]:hover {
   margin: 0 auto;
   background-color: var(--white);
   padding: 40px;
-  border-radius: 0 8px 8px 0;
+  border-radius: 8px;
 }
 
 .admin {
