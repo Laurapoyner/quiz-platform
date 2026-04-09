@@ -288,23 +288,37 @@ button[type="submit"]:hover {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: 450px;
   overflow-y: auto;
   padding-right: 8px;
   border: 1px;
   border-radius: 6px;
+  max-height: 450px;
 }
 
-.quiz-list::-webkit-scrollbar {
+.quiz-list-admin {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  padding-right: 8px;
+  border: 1px;
+  border-radius: 6px;
+  max-height: 260px;
+}
+
+.quiz-list::-webkit-scrollbar,
+.quiz-list-admin::-webkit-scrollbar {
   width: 10px;
 }
 
-.quiz-list::-webkit-scrollbar-thumb {
+.quiz-list::-webkit-scrollbar-thumb,
+.quiz-list-admin::-webkit-scrollbar-thumb {
   background-color: var(--accent);
   border-radius: 4px;
 }
 
-.quiz-list::-webkit-scrollbar-track {
+.quiz-list::-webkit-scrollbar-track,
+.quiz-list-admin::-webkit-scrollbar-track {
   background: var(--grey);
 }
 
@@ -319,7 +333,6 @@ ul {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  /* border: 1px solid #ccc; */
   border: 1px solid var(--darkblue);
   border-radius: 6px;
   margin-bottom: 10px;
@@ -370,10 +383,11 @@ ul {
   padding: 20px;
   border-radius: 8px;
   min-width: 500px;
+  max-height: 100%;
 }
 
 .results-table-container {
-  max-height: 400px;
+  max-height: 460px;
   overflow-y: auto;
 }
 
