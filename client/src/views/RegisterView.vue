@@ -103,8 +103,8 @@ export default {
         return;
       }
       //minimum længde på 6
-      if (this.password.length < 6) {
-        this.error = "Password skal være mindst 6 tegn";
+      if (this.password.length < 8) {
+        this.error = "Password skal være mindst 8 tegn";
         return;
       }
       try {
