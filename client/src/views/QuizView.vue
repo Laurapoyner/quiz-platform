@@ -75,7 +75,7 @@
     </div>
 
     <button v-if="submitted" @click="goBack" class="back-btn">
-      Tilbage til dashboard
+      {{ isAdmin ? 'Tilbage til Admin Panel' : 'Tilbage til dashboard' }}
     </button>
   </div>
 </template>
@@ -146,6 +146,12 @@ export default {
       console.error("Fejl ved hentning af quiz:", err);
     }
   },
+
+computed: {
+  isAdmin() {
+    return localStorage.getItem("role") === "admin";
+  }
+},
 
   methods: {
     async submitQuiz() {
