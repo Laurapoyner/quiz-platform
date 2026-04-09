@@ -198,8 +198,21 @@ button[type="submit"]:hover {
   margin: 0 auto;
   background-color: var(--white);
   padding: 40px;
-
   border-radius: 0 0 8px 8px;
+}
+
+.login-view,
+.register-view {
+  width: 700px;
+
+  text-align: left;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  background-color: var(--white);
+  padding: 40px;
+  border-radius: 0 8px 8px 0;
 }
 
 .admin {
@@ -236,14 +249,30 @@ button[type="submit"]:hover {
   border-radius: 6px;
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
-input[type="file"] {
-  margin-top: 10px;
+.file-label {
+  display: inline-block;
   border: 1px dashed var(--darkblue);
-  padding: 10px;
-  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  text-align: center;
   background-color: var(--blue-opacity);
+  font-size: 14px;
+  font-weight: 600;
+
+  .file-name {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 400;
+  }
+}
+
+.file-label:hover {
+  background-color: var(--accent);
+  color: var(--white);
 }
 
 /**quiz list**/

@@ -10,15 +10,33 @@
       </div>
 
       <!--- Upload quiz --->
-      <div class="upload">
+      <div class="divider">
         <h3>Upload en ny quiz</h3>
-        <input type="file" @change="handleFile" accept=".xml" />
-        <button class="quiz-item-btn" @click="uploadQuiz">Upload</button>
+        <div class="upload">
+          <input
+            id="fileInput"
+            type="file"
+            @change="handleFile"
+            accept=".xml"
+            style="display: none"
+          />
+
+          <label for="fileInput" class="file-label">
+            Vælg en quiz
+            <p class="file-name">
+              {{ selectedFileName || "Quiz skal være typen .xml" }}
+            </p>
+          </label>
+
+          <button class="quiz-item-btn upload-btn" @click="uploadQuiz">
+            Upload
+          </button>
+        </div>
       </div>
 
       <!--- Quiz liste --->
       <div class="quiz-list">
-        <h3>Quiz liste</h3>
+        <h3>Uploadede quizzer</h3>
 
         <ul v-if="quizzes.length">
           <li class="quiz-item" v-for="quiz in quizzes" :key="quiz">
@@ -67,6 +85,7 @@ export default {
     return {
       username: "",
       selectedFile: null,
+      selectedFileName: "",
       quizzes: [],
       results: [],
     };
@@ -86,11 +105,13 @@ export default {
       this.$emit("start-quiz", quizName); // send quiznavnet op til App.vue
     },
     handleFile(event) {
-      this.selectedFile = event.target.files[0];
+      const file = event.target.files[0];
+      this.selectedFile = file;
+      this.selectedFileName = file ? file.name : "";
     },
 
     async uploadQuiz() {
-      if (!this.selectedFile) {
+      if (!this.selectedFileName) {
         alert("Vælg en fil først");
         return;
       }
