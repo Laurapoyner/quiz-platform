@@ -10,7 +10,10 @@ const path = require("path")
 const filePath = path.join(__dirname, "../data/users.json");
 
 const readUsers = () => {
-    return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    const data = fs.readFileSync(filePath, "utf-8");
+
+    // hvis filen er tom, så returnere den også et tomt array
+    return data ? JSON.parse(data) : [];
 };
 
 const writeUsers = () => {
