@@ -16,7 +16,7 @@ const readUsers = () => {
     return data ? JSON.parse(data) : [];
 };
 
-const writeUsers = () => {
+const writeUsers = (data) => {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 };
 

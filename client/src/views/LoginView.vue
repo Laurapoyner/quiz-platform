@@ -50,7 +50,7 @@ export default {
       this.error = "";
       try {
         // TO DO: skal ændres til den rigtige API endpoint
-        const response = await fetch("http://localhost:3000/api/login", {
+        const response = await fetch("http://localhost:3000/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -62,7 +62,7 @@ export default {
         const data = await response.json();
 
         if (!response.ok) {
-          this.error = data.error || "Login fejlede";
+          this.error = data.message || "Login fejlede";
           return;
         }
 
