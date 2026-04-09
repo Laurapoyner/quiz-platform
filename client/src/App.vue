@@ -26,7 +26,7 @@
     <QuizView 
       v-if="currentView === 'quiz'"
       :quizName="selectedQuiz"
-      @go-dashboard="currentView = 'dashboard'" 
+      @go-dashboard="gotoDashboard" 
     />
   </div>
 </template>
@@ -68,9 +68,15 @@ export default {
       this.currentView = "quiz";
     },
 
-    // En lille hjælper til at komme tilbage
     gotoDashboard() {
-      this.currentView = this.userRole === 'admin' ? 'admin' : 'dashboard';
+      // Tjekker localStorage for role
+      const role = localStorage.getItem("role");
+      
+      if (role === "admin") {
+        this.currentView = "admin";
+      } else {
+        this.currentView = "dashboard";
+      }
     }
   },
 };
