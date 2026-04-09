@@ -21,6 +21,10 @@ const xml2js = require('xml2js');
 
 const sessions = {};
 
+function shuffle(array) {
+    return [...array].sort(() => Math.random() - 0.5);
+}
+
 async function startQuiz(quizId, user) {
     const quiz = await loadQuiz(quizId);
 
@@ -100,9 +104,95 @@ async function loadQuiz(quizId) {
     return result.quiz;
 }
 
+async function submitQuiz(quizId, userAnswers) {
+    const quiz = await loadQuiz(quizId);
+
+    let totalScore = 0;
+    const results = [];
+
+    quiz.question.forEach((q) => {
+        const qId = q.id[0];
+
+        const answers = q.answer;
+
+        // find korrekte svar
+        const correctIndexes = answers
+            .map((a, i) => a.correct[0] === "True" ? i : null)
+            .filter(i => i !== null);
+
+        let selected = userAnswers[qId];
+
+        // kompatibel med både single og multiple
+        if (selected === undefined) {
+            selected = [];
+        } else if (!Array.isArray(selected)) {
+            selected = [selected];
+        }
+
+        let questionScore = 0;
+
+        // + point for rigtige
+        correctIndexes.forEach(i => {
+            if (selected.includes(i)) {
+                questionScore += 1 / correctIndexes.length;
+            }
+        });
+
+        // - point for forkerte
+        selected.forEach(i => {
+            if (!correctIndexes.includes(i)) {
+                questionScore -= 1 / correctIndexes.length;
+            }
+        });
+
+        totalScore += questionScore;
+
+        results.push({
+            questionId: qId,
+            correct: questionScore > 0
+        });
+    });
+
+    return {
+        score: Math.max(0, totalScore),
+        total: quiz.question.length,
+        results
+    };
+}
+
+async function getQuizForUser(quizId) {
+    const quiz = await loadQuiz(quizId);
+
+    const shuffledQuestions = shuffle(quiz.question);
+
+    return {
+        topic: quiz.topic?.[0] || "Quiz",
+        questions: shuffledQuestions.map((q) => {
+
+            const shuffledAnswers = shuffle(
+                q.answer.map((a, index) => ({
+                    originalIndex: index,
+                    text: a.answertext[0]
+                }))
+            );
+
+            return {
+                id: q.id[0],
+                questiontext: q.questiontext[0],
+                answers: shuffledAnswers.map(a => ({
+                    id: a.originalIndex,
+                    text: a.text
+                }))
+            };
+        })
+    };
+}
+
 module.exports = {
     startQuiz,
     answerQuestion,
-    getResult
+    getResult,
+    submitQuiz,
+    getQuizForUser
 };
 
