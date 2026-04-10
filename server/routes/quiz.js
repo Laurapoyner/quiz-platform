@@ -1,107 +1,98 @@
 ﻿const express = require('express');
 const router = express.Router();
-
-const { startQuiz, answerQuestion } = require("../services/quizService");
-
+const { calculateScore } = require("../services/quizService");
 const fs = require("fs");
 const path = require("path");
 const xml2js = require("xml2js");
 
-
-// START QUIZ
-router.post("/start", async (req, res) => {
-    const { quizId, user } = req.body;
-
-    const result = await startQuiz(quizId, user);
-    res.json(result);
-});
-
-
-// ANSWER QUESTION
-router.post("/answer", (req, res) => {
-    const { sessionId, answer } = req.body;
-
-    const result = answerQuestion(sessionId, answer);
-    res.json(result);
-});
-
-
-// GET QUIZ (læser fra /data/quizzes)
+// GET QUIZ - Sender kun det nødvendige data til frontend
 router.get("/:quizName", async (req, res) => {
     try {
-        const quizName = req.params.quizName;
-
-        const filePath = path.join(__dirname, "../../data/quizzes", `${quizName}.xml`);
-
-        console.log("GET QUIZ PATH:", filePath);
-
-        if (!fs.existsSync(filePath)) {
-            return res.status(404).json({ error: "Quiz ikke fundet" });
-        }
-
+        const filePath = path.join(__dirname, "../../data/quizzes", `${req.params.quizName}.xml`);
         const xmlData = fs.readFileSync(filePath, "utf-8");
         const parsed = await xml2js.parseStringPromise(xmlData);
 
-        res.json(parsed.quiz);
+        const cleanedQuestions = parsed.quiz.question.map((q, index) => ({
+            id: q.id?.[0] || String(index),
+            questiontext: q.questiontext?.[0],
+            // Vi sender stadig typen, så frontend ved om det er radio eller checkbox
+            type: q.answer.filter(a => a.correct?.[0] === "True").length > 1 ? "multi" : "single",
+            answers: q.answer.map((a, i) => ({
+                id: i,
+                answertext: a.answertext?.[0]
+                // VIGTIGT: Vi har slettet "correct: a.correct === 'True'" herfra!
+            }))
+        }));
 
+        res.json({ topic: parsed.quiz.topic, questions: cleanedQuestions });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Server fejl" });
+        res.status(500).json({ error: "Kunne ikke hente quiz" });
     }
 });
 
-
-// GEM RESULTAT (læser/skriver i /data/results.xml)
+// Modtager svar, beregner score og gemmer i results.xml
 router.post("/submit", async (req, res) => {
     try {
-        const { quiz, user, score, time } = req.body;
+        const { quiz, user, answers, time } = req.body;
+        console.log(`Modtaget submit for ${quiz} fra ${user}`);
 
-        const filePath = path.join(__dirname, "../../data/results.xml");
+        const score = await calculateScore(quiz, answers);
 
-        console.log("SAVE RESULT PATH:", filePath);
+        // 1. Hent facit til feedback
+        const quizFilePath = path.join(__dirname, "../../data/quizzes", `${quiz}.xml`);
+        const quizXmlData = fs.readFileSync(quizFilePath, "utf-8");
+        const quizParsed = await xml2js.parseStringPromise(quizXmlData);
 
+        const feedback = {};
+        quizParsed.quiz.question.forEach((q, index) => {
+            const qId = q.id?.[0] || String(index);
+            feedback[qId] = q.answer
+                .map((a, i) => (a.correct?.[0] === "True" ? i : null))
+                .filter(i => i !== null);
+        });
+
+        // 2. HÅNDTERING AF RESULTS.XML (Her var fejlen!)
+        const resultsPath = path.join(__dirname, "../../data/results.xml");
+
+        // Vi definerer resultsObj her, så den eksisterer før vi bruger den
         let resultsObj;
 
-        // læs eksisterende XML
-        if (fs.existsSync(filePath)) {
-            const xmlData = fs.readFileSync(filePath, "utf-8");
-            resultsObj = await xml2js.parseStringPromise(xmlData);
+        if (fs.existsSync(resultsPath)) {
+            const existingXml = fs.readFileSync(resultsPath, "utf-8");
+            resultsObj = await xml2js.parseStringPromise(existingXml);
         } else {
+            // Hvis filen ikke findes, opretter vi en tom struktur
             resultsObj = { results: { result: [] } };
         }
 
-        // unikt ID
-        const attemptId = `${user}-${Date.now()}`;
-
-        // resultat
-        const newResult = {
-            attemptId: [attemptId],
+        // Nu kan vi sikkert pushe til resultsObj
+        resultsObj.results.result.push({
+            attemptId: [`${user}-${Date.now()}`],
             userId: [user],
             quizId: [quiz],
             score: [score.toString()],
-            time: [time ? time.toString() : "0"],
+            time: [time.toString()],
             date: [new Date().toISOString()]
-        };
+        });
 
-        // sørg for array findes
-        if (!resultsObj.results.result) {
-            resultsObj.results.result = [];
-        }
-
-        resultsObj.results.result.push(newResult);
-
-        // gem XML
+        // Gem den opdaterede fil
         const builder = new xml2js.Builder();
-        const xml = builder.buildObject(resultsObj);
+        const updatedXml = builder.buildObject(resultsObj);
+        fs.writeFileSync(resultsPath, updatedXml);
 
-        fs.writeFileSync(filePath, xml);
-
-        res.json({ success: true });
+        // 3. Send succes-svar
+        res.json({
+            success: true,
+            score: score,
+            correctAnswers: feedback
+        });
 
     } catch (err) {
-        console.error("Fejl ved gemning:", err);
-        res.status(500).json({ error: "Kunne ikke gemme resultat" });
+        console.error("DER SKETE EN FEJL I SUBMIT:");
+        console.error(err);
+        res.status(500).json({ error: "Fejl ved submit", details: err.message });
     }
 });
+
 
 module.exports = router;
