@@ -1,108 +1,74 @@
-/**
- * quizService.js
- * 
- * Ansvar: 
- * Håndterer al quiz-logik på serveren
- * 
- * Indeholder funktioner til:
- * - at starte en quiz
- * - at håndtere brugerens svar
- * - at beregne score
- * - at styre quiz flow (spørgsmål, progression)
- * 
- * NOTE:
- * Indeholder IKKE API routes eller database-logik
- */
-
-
 const fs = require('fs');
 const path = require('path');
 const xml2js = require('xml2js');
 
-const sessions = {};
-
-async function startQuiz(quizId, user) {
-    const quiz = await loadQuiz(quizId);
-
-    const sessionId = Date.now().toString();
-
-    sessions[sessionId] = {
-        user,
-        questions: quiz.question,
-        currentQuestionIndex: 0,
-        score: 0
-    };
-
-    const firstQuestion = quiz.question[0];
-
-    return {
-        sessionId,
-        question: firstQuestion.questiontext[0],
-        answers: firstQuestion.answer.map(a => a.answertext[0])
-    };
-}
-
-function answerQuestion(sessionId, answer) {
-    const session = sessions[sessionId];
-
-    if (!session) {
-        return { error: "Session not found" };
-    }
-
-    const currentQuestion = session.questions[session.currentQuestionIndex];
-
-    const answers = currentQuestion.answer;
-
-    // find alle korrekte svar
-    const correctAnswers = answers
-        .filter(a => a.correct[0] === "True")
-        .map(a => a.answertext[0]);
-
-    // tjek om brugerens svar er korrekt
-    if (correctAnswers.includes(answer)) {
-        session.score += 1;
-    }
-
-    // gå videre til næste spørgsmål
-    session.currentQuestionIndex += 1;
-
-    // hvis der er flere spørgsmål
-    if (session.currentQuestionIndex < session.questions.length) {
-        const nextQuestion = session.questions[session.currentQuestionIndex];
-
-        return {
-            sessionId,
-            question: nextQuestion.questiontext[0],
-            answers: nextQuestion.answer.map(a => a.answertext[0])
-        };
-    }
-
-    // ellers er quiz færdig
-    return {
-        sessionId,
-        finished: true,
-        score: session.score
-    };
-}
-
-function getResult(sessionId) {
-    return { message: "not implemented" };
-}
-
-async function loadQuiz(quizId) {
+/**
+ * Beregner scoren baseret på XML-filen og brugerens svar.
+ * Sker på serveren for at undgå snyd.
+ */
+async function calculateScore(quizId, userAnswers) {
+    // 1. Find og læs den korrekte quiz-fil
     const filePath = path.join(__dirname, '../../data/quizzes', `${quizId}.xml`);
-
     const xml = fs.readFileSync(filePath, 'utf-8');
+    const result = await xml2js.parseStringPromise(xml);
+    const questions = result.quiz.question;
 
-    const parser = new xml2js.Parser();
-    const result = await parser.parseStringPromise(xml);
+    let totalScore = 0;
 
-    return result.quiz;
+    // 2. Gennemgå hvert spørgsmål i XML'en
+    questions.forEach((q, index) => {
+        const qId = q.id?.[0] || String(index);
+        const userAnswer = userAnswers[qId]; // Hvad svarede brugeren?
+        const answers = q.answer;
+
+        // 3. Identificer de korrekte svar-index i XML-filen
+        const correctIndexes = answers
+            .map((a, i) => (a.correct?.[0] === "True" ? i : null))
+            .filter((i) => i !== null);
+
+        // Bestem om det er et multi-choice spørgsmål
+        const isMulti = correctIndexes.length > 1;
+
+        // Hvis brugeren ikke har svaret, gå videre
+        if (userAnswer === undefined || userAnswer === null || userAnswer === "") return;
+
+        if (!isMulti) {
+            // SINGLE CHOICE: Giv 1 point hvis svaret matcher et korrekt index
+            if (correctIndexes.includes(Number(userAnswer))) {
+                totalScore += 1;
+            }
+        } else {
+            // MULTI CHOICE: Avanceret pointsystem
+            const selectedArr = Array.isArray(userAnswer) ? userAnswer.map(Number) : [Number(userAnswer)];
+
+            let correctChosen = 0;
+            let wrongChosen = 0;
+
+            // Tæl hvor mange rigtige og forkerte brugeren har valgt
+            selectedArr.forEach(index => {
+                if (correctIndexes.includes(index)) {
+                    correctChosen++;
+                } else {
+                    wrongChosen++;
+                }
+            });
+
+            // Logik for point (0.5 for ét rigtigt, -0.5 for forkert etc.)
+            let points = 0;
+            if (correctChosen === 1 && wrongChosen === 0) points = 0.5;
+            if (correctChosen === 2 && wrongChosen === 0) points = 1;
+            if (correctChosen === 0 && wrongChosen === 1) points = -0.5;
+            if (correctChosen === 1 && wrongChosen === 1) points = 0;
+            if (correctChosen === 2 && wrongChosen === 1) points = 0.5;
+            if (correctChosen === 0 && wrongChosen === 2) points = -1;
+            if (correctChosen === 1 && wrongChosen === 2) points = -0.5;
+            if (correctChosen === 2 && wrongChosen === 2) points = 0;
+
+            totalScore += points;
+        }
+    });
+
+    return totalScore;
 }
 
-module.exports = {
-    startQuiz,
-    answerQuestion,
-    getResult
-};
-
+module.exports = { calculateScore };
