@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<topic>Vue</topic>
+
+<question>
+<id>1</id>
+<type>multichoice</type>
+<questiontext><![CDATA[Hvad bruges <b>v-bind</b> til i Vue?]]></questiontext>
+<answer>
+<answertext><![CDATA[At binde data til HTML-attributter]]></answertext>
+<correct>True</correct>
+</answer>
+<answer>
+<answertext><![CDATA[At lave loops]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[At håndtere events]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[At oprette komponenter]]></answertext>
+<correct>False</correct>
+</answer>
+</question>
+
+<question>
+<id>2</id>
+<type>multichoice</type>
+<questiontext><![CDATA[Hvad er shorthand for <b>v-bind</b>?]]></questiontext>
+<answer>
+<answertext><![CDATA[#]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[:]]></answertext>
+<correct>True</correct>
+</answer>
+<answer>
+<answertext><![CDATA[@]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[$]]></answertext>
+<correct>False</correct>
+</answer>
+</question>
+
+<question>
+<id>3</id>
+<type>multichoice</type>
+<questiontext><![CDATA[Hvad gør <b>v-model</b>?]]></questiontext>
+<answer>
+<answertext><![CDATA[Binder data én vej]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[Binder data to-vejs (input ↔ state)]]></answertext>
+<correct>True</correct>
+</answer>
+<answer>
+<answertext><![CDATA[Kalder en metode]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[Renderer komponenter]]></answertext>
+<correct>False</correct>
+</answer>
+</question>
+
+<question>
+<id>4</id>
+<type>multichoice</type>
+<questiontext><![CDATA[Hvad er shorthand for <b>v-on</b>?]]></questiontext>
+<answer>
+<answertext><![CDATA[:]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[@]]></answertext>
+<correct>True</correct>
+</answer>
+<answer>
+<answertext><![CDATA[#]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[!]]></answertext>
+<correct>False</correct>
+</answer>
+</question>
+
+<question>
+<id>5</id>
+<type>multichoice</type>
+<questiontext><![CDATA[Hvad gør <b>v-if</b>?]]></questiontext>
+<answer>
+<answertext><![CDATA[Renderer elementer flere gange]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[Viser/skjuler elementer baseret på en condition]]></answertext>
+<correct>True</correct>
+</answer>
+<answer>
+<answertext><![CDATA[Binder data]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[Lytter til events]]></answertext>
+<correct>False</correct>
+</answer>
+</question>
+
+<question>
+<id>6</id>
+<type>multichoice</type>
+<questiontext><![CDATA[Hvad er forskellen på <b>v-if</b> og <b>v-show</b>?]]></questiontext>
+<answer>
+<answertext><![CDATA[Ingen forskel]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[v-if skjuler med CSS, v-show fjerner fra DOM]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[v-if fjerner fra DOM, v-show bruger CSS]]></answertext>
+<correct>True</correct>
+</answer>
+<answer>
+<answertext><![CDATA[v-show virker ikke med conditions]]></answertext>
+<correct>False</correct>
+</answer>
+</question>
+
+<question>
+<id>7</id>
+<type>multichoice</type>
+<questiontext><![CDATA[Hvad bruges <b>v-for</b> til?]]></questiontext>
+<answer>
+<answertext><![CDATA[Events]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[Loops/lister]]></answertext>
+<correct>True</correct>
+</answer>
+<answer>
+<answertext><![CDATA[Styling]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[API kald]]></answertext>
+<correct>False</correct>
+</answer>
+</question>
+
+<question>
+<id>8</id>
+<type>multichoice</type>
+<questiontext><![CDATA[Hvad skal man altid bruge sammen med <b>v-for</b>?]]></questiontext>
+<answer>
+<answertext><![CDATA[id]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[key]]></answertext>
+<correct>True</correct>
+</answer>
+<answer>
+<answertext><![CDATA[ref]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[name]]></answertext>
+<correct>False</correct>
+</answer>
+</question>
+
+<question>
+<id>9</id>
+<type>multichoice</type>
+<questiontext><![CDATA[Hvad gør <b>computed properties</b>?]]></questiontext>
+<answer>
+<answertext><![CDATA[Kører én gang]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[Gemmer og cacher beregnet data]]></answertext>
+<correct>True</correct>
+</answer>
+<answer>
+<answertext><![CDATA[Sender data til server]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[Lytter til events]]></answertext>
+<correct>False</correct>
+</answer>
+</question>
+
+<question>
+<id>10</id>
+<type>multichoice</type>
+<questiontext><![CDATA[Hvad er forskellen på <b>methods</b> og <b>computed</b>?]]></questiontext>
+<answer>
+<answertext><![CDATA[Ingen forskel]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[Methods er cached, computed er ikke]]></answertext>
+<correct>False</correct>
+</answer>
+<answer>
+<answertext><![CDATA[Computed er cached, methods er ikke]]></answertext>
+<correct>True</correct>
+</answer>
+<answer>
+<answertext><![CDATA[Methods virker ikke med data]]></answertext>
+<correct>False</correct>
+</answer>
+</question>
+
+</quiz>
