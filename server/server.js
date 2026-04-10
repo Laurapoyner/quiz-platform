@@ -1,12 +1,13 @@
 const express = require("express");
 const cors = require("cors");
-
+const { auth } = require("./middleware/authMiddleware");
 const app = express();
 
-app.use(cors({}));            // cors
+app.use(cors({
+    origin: "http://localhost:5173"
+}));            // cors
 
 app.use(express.json());
-
 
 //import af routes
 
