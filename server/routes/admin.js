@@ -22,10 +22,16 @@ const router = express.Router();
 
 // Upload config (gemmer XML filer)
 const storage = multer.diskStorage({
-  destination: "data/quizzes/",
-  filename: (req, file, cb) => {
-    cb(null, file.originalname); // gem med original navn
-  },
+    destination: (req, file, cb) => {
+        const uploadPath = path.resolve(__dirname, "../../data/quizzes");
+
+        console.log("UPLOAD PATH:", uploadPath); // debug
+
+        cb(null, uploadPath);
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    },
 });
 
 const upload = multer({ storage });

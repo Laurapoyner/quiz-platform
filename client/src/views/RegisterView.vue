@@ -37,7 +37,7 @@
             invalid: !passwordRules.hasLength,
           }"
         >
-          • Password skal være over 6 tegn
+          • Password skal minimum være 8 tegn
         </p>
         <p
           :class="{
@@ -77,7 +77,7 @@ export default {
     passwordRules() {
       return {
         hasUppercase: /[A-Z]/.test(this.password),
-        hasLength: this.password.length >= 6,
+        hasLength: this.password.length >= 8,
         hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(this.password),
         passwordsMatch:
           this.password === this.confirmPassword && this.password !== "",
